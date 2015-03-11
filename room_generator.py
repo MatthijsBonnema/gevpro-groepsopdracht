@@ -27,12 +27,12 @@ class RoomGenerator():
     def getrooms(self):
         """Gives a bat, gold or a pit to the rooms"""
         for room in self.rooms:
-            whatitem = randrange(0, 3)
+            whatItem = randrange(0, 3)
 
             if randrange(0, 101) <= self.chance:
-                if whatitem == 0:
+                if whatItem == 0:
                     room[1] = "bat"
-                elif whatitem == 1:
+                elif whatItem == 1:
                     room[1] = "gold"
                 else:
                     room[1] = "pit"
