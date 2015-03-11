@@ -55,33 +55,24 @@ class Wumpus:
             if self.xCoor - self.heroXCoor > 0:
                 if relXDistance < absXDistance:
                     self.xCoor = self.xCoor + 1
-                    print("X +1 rel")
                 else:
                     self.xCoor = self.xCoor - 1
-                    print("X -1 abs")
             else:
                 if relXDistance < absXDistance:
                     self.xCoor = self.xCoor - 1
-                    print("X -1 rel")
                 else:
                     self.xCoor = self.xCoor + 1
-                    print("X +1 abs")
         if shortestXDistance < shortestYDistance and shortestYDistance != 0:
-            print("hi")
             if self.yCoor - self.heroYCoor > 0:
                 if relYDistance < absYDistance:
                     self.yCoor = self.yCoor + 1
-                    print("Y +1 rel")
                 else:
                     self.yCoor = self.yCoor - 1
-                    print("Y -1 abs")
             else:
                 if relYDistance < absYDistance:
                     self.yCoor = self.yCoor - 1
-                    print("Y -1 rel")
                 else:
                     self.yCoor = self.yCoor + 1
-                    print("Y +1 abs")
                     
         #keep wumpus within map-range
         if self.xCoor > 5: 
