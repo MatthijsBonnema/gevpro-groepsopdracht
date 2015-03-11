@@ -21,7 +21,7 @@ class Hero:
         return self.arrows
         
     def moveup(self):
-        self.yCor -= 1 # due to coordinates of UI
+        self.yCor -= 1  # due to coordinates of UI
         if self.yCor < 1:
             self.yCor = 4
         self.updateposition()
@@ -33,7 +33,7 @@ class Hero:
         self.updateposition()
         
     def movedown(self):
-        self.yCor += 1 # due to coordinates of UI
+        self.yCor += 1  # due to coordinates of UI
         if self.yCor > 4:
             self.yCor = 1
         self.updateposition()
