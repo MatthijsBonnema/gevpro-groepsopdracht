@@ -47,7 +47,7 @@ class RoomGenerator():
     def getrooms(self):
         """Gives a bat, gold or a pit to the rooms"""
         for room in self.rooms:
-            whatItem = randrange(0, 3)
+            whatItem = randrange(0, 3)  # A 1 in 3 chance to get one of the items
 
             if randrange(0, 101) <= self.chance:
                 if whatItem == 0:
