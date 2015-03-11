@@ -28,6 +28,12 @@ class Hero:
     def getname(self):
         return self.name
 
+    def getgold(self):
+        return self.gold
+
+    def getarrows(self):
+        return self.arrows
+
     def foundgold(self):
         self.gold += 1
         return self.gold

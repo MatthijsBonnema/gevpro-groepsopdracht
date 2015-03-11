@@ -58,17 +58,18 @@ def main():
             for room in rooms.showrooms():
                 if hunter.getposition() == room[0]:
                     if room[1] == "pit":
-                        print("You stepped on a {}".format(room[1]))
+                        print("I feel a draft")
                         alive = False
                     elif room[1] == "gold":
                         print("You stepped on a {}".format(room[1]))
                         hunter.foundgold()
                     elif room[1] == "bat":
-                        print("You stepped on a {}".format(room[1]))
+                        print("Bats nearby")
                         alive = False
 
-    print("You died :O")
-
+    print("You died!\n")
+    print("You found {} gold".format(hunter.getgold()))
+    print("You had {} arrows left".format(hunter.getarrows()))
 
 
 if __name__ == "__main__":
