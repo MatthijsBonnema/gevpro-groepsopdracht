@@ -36,11 +36,7 @@ def main():
 
         # check if something is near
         xCor, yCor = hunter.getposition()
-        positioncheck = []
-        positioncheck.append((xCor, yCor + 1))
-        positioncheck.append((xCor, yCor - 1))
-        positioncheck.append((xCor + 1, yCor))
-        positioncheck.append((xCor - 1, yCor))
+        positioncheck = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
 
         for coordinates in rooms.showrooms():
             if coordinates[0] in positioncheck:
