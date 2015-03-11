@@ -31,12 +31,12 @@ class RoomGenerator():
 
     def setxy(self, x, y):
         """Set the amount of rooms in x and y"""
-        self.xrooms = x + 1
-        self.yrooms = y + 1
+        self.xrooms = x + 1  # + 1 due coordinates
+        self.yrooms = y + 1  # + 1 due coordinates
 
     def getxy(self):
         """Returns the amount of rooms in x and y"""
-        return self.xrooms - 1, self.yrooms - 1
+        return self.xrooms - 1, self.yrooms - 1  # - 1 due coordinates
 
     def setrooms(self):
         """Creates a list with rooms"""
