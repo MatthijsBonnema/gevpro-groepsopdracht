@@ -21,7 +21,6 @@ class RoomGenerator():
         for y in range(1, 5):
             for x in range(1, 6):
                 self.rooms.append([(x, y), None])
-        return self.rooms
 
     def getrooms(self):
         for room in self.rooms:
@@ -34,4 +33,3 @@ class RoomGenerator():
                     room[1] = "gold"
                 else:
                     room[1] = "pit"
-        return self.rooms
