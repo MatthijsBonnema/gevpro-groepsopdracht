@@ -8,21 +8,24 @@ from random import randrange
 
 
 class RoomGenerator():
+    """Creates a list with coordinates and possibly a bat, gold or a pit"""
     def __init__(self):
         self.rooms = []
         self.setrooms()
-        self.chance = 20
+        self.chance = 20  # in %
         self.getrooms()
 
     def __str__(self):
         return str(self.getrooms())
 
     def setrooms(self):
+        """Creates a list with rooms"""
         for y in range(1, 5):
             for x in range(1, 6):
                 self.rooms.append([(x, y), None])
 
     def getrooms(self):
+        """Gives a bat, gold or a pit to the rooms"""
         for room in self.rooms:
             whatitem = randrange(0, 3)
 
