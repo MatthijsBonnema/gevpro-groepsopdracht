@@ -4,29 +4,33 @@
 # Date: 3/11/15
 # Info: 
 
-# rooms = [((xCor, yCor), item), ((xCor, yCor), item), ((xCor, yCor), item), ..
-#
-
-
-import sys
 from random import randrange
 
 class RoomGenerator():
     def __init__(self):
         self.rooms = []
+        self.setrooms()
+        self.chance = 20
         self.getrooms()
 
     def __str__(self):
-        return self.getrooms()
+        return str(self.getrooms())
+
+    def setrooms(self):
+        for y in range(1, 5):
+            for x in range(1, 6):
+                self.rooms.append([(x, y), None])
+        return self.rooms
 
     def getrooms(self):
+        for room in self.rooms:
+            whatitem = randrange(0, 3)
 
-
-        for i in range(20):
-            if randrange(0, 10) <= 1:
-                print(randrange(0,10))
-
-
-
-if __name__ == "__main__":
-    RoomGenerator()
+            if randrange(0, 101) <= self.chance:
+                if whatitem == 0:
+                    room[1] = "bat"
+                elif whatitem == 1:
+                    room[1] = "gold"
+                else:
+                    room[1] = "pit"
+        return self.rooms
