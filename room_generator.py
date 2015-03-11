@@ -18,20 +18,25 @@ class RoomGenerator():
         self.getrooms()
 
     def __str__(self):
+        """returns a string with all the rooms + items"""
         return str(self.getrooms())
 
     def setchance(self, chance):
+        """Set the chance for items"""
         self.chance = chance
 
     def getchance(self):
+        """Returns the chance on items"""
         return self.chance
 
     def setxy(self, x, y):
+        """Set the amount of rooms in x and y"""
         self.xrooms = x + 1
         self.yrooms = y + 1
 
     def getxy(self):
-        return self.xrooms, self.yrooms
+        """Returns the amount of rooms in x and y"""
+        return self.xrooms - 1, self.yrooms - 1
 
     def setrooms(self):
         """Creates a list with rooms"""
