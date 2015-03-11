@@ -6,7 +6,10 @@ class Hero:
         self.arrows = 4
         self.path = []
         self.spawn()
-        
+
+    def __str__(self):
+        return "Name: {} Position:{} Gold:{} Arrows:{} Steps: {}".format(self.name, self.position, self.gold,
+                                                                         self.arrows, len(self.path))
     def spawn(self):
         self.xCor = int(randrange(1, 6))
         self.yCor = int(randrange(1, 5))
@@ -51,11 +54,3 @@ class Hero:
     
     def getpath(self):
         return self.path
-    
-    def __str__(self):
-        return "Name: {} Position:{} Gold:{} Arrows:{} Steps: {}".format(self.name, self.position, self.gold,
-                                                                         self.arrows, len(self.path))
-        
-        
-        
-    
