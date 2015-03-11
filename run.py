@@ -5,15 +5,18 @@
 # Info: 
 
 import sys
-import room_generator
-import hero
+from room_generator import RoomGenerator
+from hero import Hero
 
 
 def main():
-    name = input("What is your name?\n")
+    # name = input("What is your name?\n")
+    name = "test"
 
-    hunter = hero.Hero(name)
-    print(hunter)
+    hunter = Hero(name)
+    spawn = hunter.getposition()
+
+    rooms = RoomGenerator(spawn)
 
 
 if __name__ == "__main__":
