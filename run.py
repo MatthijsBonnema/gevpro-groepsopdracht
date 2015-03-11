@@ -42,30 +42,37 @@ def main():
             if coordinates[0] in positioncheck:
                 items.append(coordinates[1])
         if "gold" in items:
-            print("There is gold near you!")
+            print("There is gold near you!\n")
         if "bat" in items:
-            print("There is bat near you!")
+            print("Bats nearby\n")
         if "pit" in items:
-            print("There is a pit near you!")
+            print("I feel a draft\n")
 
-        moveto = input("\nPlease select your move Hunter. up, down, left or right?\n")
-        move = hunter.move(moveto)
+        action = input("Do you want to move or shoot?\n")
 
-        if move == False:
-            print("Not a valid input!\n")
+        if action.lower() == "move":
+            moveto = input("\nPlease select your move Hunter. up, down, left or right?\n")
+            move = hunter.move(moveto)
+
+            if move == False:
+                print("Not a valid input!\n")
+            else:
+                print("You moved {}!\n".format(moveto))
+                for room in rooms.showrooms():
+                    if hunter.getposition() == room[0]:
+                        if room[1] == "pit":
+                            print("You stepped on a {}\n".format(room[1]))
+                            alive = False
+                        elif room[1] == "gold":
+                            print("You stepped on a {}\n".format(room[1]))
+                            hunter.foundgold()
+                        elif room[1] == "bat":
+                            print("You stepped on a {}\n".format(room[1]))
+                            alive = False
+        elif action.lower() == "shoot":
+            continue  # add shoot action
         else:
-            print("You moved {}!\n".format(moveto))
-            for room in rooms.showrooms():
-                if hunter.getposition() == room[0]:
-                    if room[1] == "pit":
-                        print("I feel a draft")
-                        alive = False
-                    elif room[1] == "gold":
-                        print("You stepped on a {}".format(room[1]))
-                        hunter.foundgold()
-                    elif room[1] == "bat":
-                        print("Bats nearby")
-                        alive = False
+            print("Not a valid input, use move or shoot")
 
     print("You died!\n")
     print("You found {} gold".format(hunter.getgold()))
