@@ -21,6 +21,9 @@ class Hero:
         self.xCor = randrange(1, 6)
         self.yCor = randrange(1, 5)
         self.updateposition()
+
+    def getposition(self):
+        return self.xCor, self.yCor
         
     def foundgold(self):
         self.gold += 1
