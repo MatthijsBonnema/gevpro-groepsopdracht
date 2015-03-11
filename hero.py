@@ -35,6 +35,22 @@ class Hero:
     def shoot(self):
         self.arrows -= 1
         return self.arrows
+
+    def move(self, moveto):
+        if moveto == "up":
+            self.moveup()
+            return True
+        elif moveto == "down":
+            self.move.down()
+            return True
+        elif moveto == "left":
+            self.moveleft()
+            return True
+        elif moveto == "right":
+            self.moveright()
+            return True
+        else:
+            return False
         
     def moveup(self):
         self.yCor -= 1  # due to inverted coordinates of UI

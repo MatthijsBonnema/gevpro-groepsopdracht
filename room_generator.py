@@ -9,11 +9,12 @@ from random import randrange
 
 class RoomGenerator():
     """Creates a list with coordinates and possibly a bat, gold or a pit"""
-    def __init__(self, spawn):
+    def __init__(self, spawnHunter, spawnWumpus):
         self.rooms = []
         self.setxy(5, 4)
         self.setchance(20)
-        self.spawnlocation = spawn
+        self.spawnHunter = spawnHunter
+        self.spawnWumpus = spawnWumpus
         self.setrooms()
         self.getrooms()
 
@@ -50,7 +51,7 @@ class RoomGenerator():
     def getrooms(self):
         """Gives a bat, gold or a pit to the rooms"""
         for room in self.rooms:
-            if room != self.spawnlocation:
+            if room[0] != self.spawnHunter or self.spawnWumpus:
                 whatItem = randrange(0, 3)  # A 1 in 3 chance to get one of the items
                 if randrange(0, 101) <= self.chance:
                     if whatItem == 0:
