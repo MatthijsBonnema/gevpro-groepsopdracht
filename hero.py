@@ -8,8 +8,8 @@ class Hero:
         self.spawn()
         
     def spawn(self):
-        self.xCoor = randrange(1,6)
-        self.yCoor = randrange(1,5)
+        self.xCoor = int(randrange(1,6))
+        self.yCoor = (randrange(1,5))
         self.updateposition()
         
     def foundgold(self):
