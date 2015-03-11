@@ -24,7 +24,10 @@ class Hero:
 
     def getposition(self):
         return self.xCor, self.yCor
-        
+
+    def getname(self):
+        return self.name
+
     def foundgold(self):
         self.gold += 1
         return self.gold
