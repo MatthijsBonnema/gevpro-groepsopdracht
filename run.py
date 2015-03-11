@@ -5,9 +5,16 @@
 # Info: 
 
 import sys
+import room_generator
+import hero
+
 
 def main():
-    name = input("What is your name?")
+    name = input("What is your name?\n")
+
+    hunter = hero.Hero(name)
+    print(hunter)
+
 
 if __name__ == "__main__":
     main()
