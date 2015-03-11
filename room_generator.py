@@ -6,6 +6,7 @@
 
 from random import randrange
 
+
 class RoomGenerator():
     def __init__(self):
         self.rooms = []
