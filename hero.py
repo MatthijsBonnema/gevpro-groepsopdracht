@@ -41,7 +41,7 @@ class Hero:
             self.moveup()
             return True
         elif moveto == "down":
-            self.move.down()
+            self.movedown()
             return True
         elif moveto == "left":
             self.moveleft()
