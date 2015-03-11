@@ -11,10 +11,9 @@ class RoomGenerator():
     """Creates a list with coordinates and possibly a bat, gold or a pit"""
     def __init__(self):
         self.rooms = []
-        self.xrooms = 5  # + 1 due coordinates
-        self.yrooms = 6   # + 1 due coordinates
+        self.setxy(5, 4)
+        self.setchance(20)
         self.setrooms()
-        self.chance = 20  # in %
         self.getrooms()
 
     def __str__(self):
