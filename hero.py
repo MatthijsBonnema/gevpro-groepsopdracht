@@ -8,44 +8,44 @@ class Hero:
         self.spawn()
         
     def spawn(self):
-        self.xCoor = int(randrange(1,6))
-        self.yCoor = (randrange(1,5))
+        self.xCor = int(randrange(1, 6))
+        self.yCor = int(randrange(1, 5))
         self.updateposition()
         
     def foundgold(self):
-        self.gold = self.gold + 1
+        self.gold += 1
         return self.gold
         
     def shoot(self):
-        self.arrows = self.arrows - 1
+        self.arrows -= 1
         return self.arrows
         
     def moveup(self):
-        self.yCoor = self.yCoor - 1 #due to coordinates of UI
-        if self.yCoor < 1:
-            self.yCoor = 4
+        self.yCor -= 1 # due to coordinates of UI
+        if self.yCor < 1:
+            self.yCor = 4
         self.updateposition()
         
     def moveright(self):
-        self.xCoor = self.xCoor + 1
-        if self.xCoor > 5:
-            self.xCoor = 1
+        self.xCor += 1
+        if self.xCor > 5:
+            self.xCor = 1
         self.updateposition()
         
     def movedown(self):
-        self.yCoor = self.yCoor + 1 #due to coordinates of UI
-        if self.yCoor > 4:
-            self.yCoor = 1
+        self.yCor += 1 # due to coordinates of UI
+        if self.yCor > 4:
+            self.yCor = 1
         self.updateposition()
     
     def moveleft(self): 
-        self.xCoor = self.xCoor - 1  
-        if self.xCoor < 1:
-            self.xCoor = 5
+        self.xCor -= 1
+        if self.xCor < 1:
+            self.xCor = 5
         self.updateposition()
         
     def updateposition(self):
-        self.position = (self.xCoor, self.yCoor)
+        self.position = (self.xCor, self.yCor)
         self.path.append(self.position)
         return self.position
     
@@ -53,7 +53,8 @@ class Hero:
         return self.path
     
     def __str__(self):
-        return "Name: {} Position:{} Gold:{} Arrows:{} Steps: {}".format(self.name,self.position, self.gold, self.arrows, len(self.path))
+        return "Name: {} Position:{} Gold:{} Arrows:{} Steps: {}".format(self.name, self.position, self.gold,
+                                                                         self.arrows, len(self.path))
         
         
         
