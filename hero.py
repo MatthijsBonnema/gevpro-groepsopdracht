@@ -34,7 +34,6 @@ class Hero:
         else:
             self.respawn()
 
-
     def getposition(self):
         return self.xCor, self.yCor
 
@@ -75,7 +74,6 @@ class Hero:
         self.yCor -= 1  # due to inverted coordinates of UI
         if self.yCor < 1:
             self.yCor = 4
-        print("debug")
         self.updateposition()
         
     def moveright(self):

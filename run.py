@@ -82,8 +82,6 @@ def main():
             moveto = input("\nPlease select your move Hunter. up, down, left or right?\n")
             move = hunter.move(moveto)
 
-            print("debug1")
-
             if not move:  # if move == False
                 print("Not a valid input!\n")
             else:
@@ -117,7 +115,6 @@ def main():
                     alive = False
         print(wumpus.getposition())
         print(hunter.getposition())
-
 
     print("You found {} gold".format(hunter.getgold()))
     print("You had {} arrows left".format(hunter.getarrows()))
