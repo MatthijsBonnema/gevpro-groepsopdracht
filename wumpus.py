@@ -13,7 +13,7 @@ class Wumpus:
         while abs(self.xCoor - self.heroXCoor) < 2:
             self.xCoor = randrange(1, 6)
         while abs(self.yCoor - self.heroYCoor) < 2:
-            self.yCoor = randrange(1,5 )
+            self.yCoor = randrange(1, 5)
         self.updateposition()
         
     def updateposition(self):
