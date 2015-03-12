@@ -1,5 +1,6 @@
 from random import randrange
 
+
 class Wumpus:
     def __init__(self, heroPosition):
         self.heroXCoor = heroPosition[0]
@@ -7,12 +8,12 @@ class Wumpus:
         self.spawn()
         
     def spawn(self):
-        self.xCoor = randrange(1,6)
-        self.yCoor = randrange(1,5)
+        self.xCoor = randrange(1, 6)
+        self.yCoor = randrange(1, 5)
         while abs(self.xCoor - self.heroXCoor) < 2:
-            self.xCoor = randrange(1,6)
+            self.xCoor = randrange(1, 6)
         while abs(self.yCoor - self.heroYCoor) < 2:
-            self.yCoor = randrange(1,5)
+            self.yCoor = randrange(1,5 )
         self.updateposition()
         
     def updateposition(self):
@@ -21,10 +22,10 @@ class Wumpus:
     def hunt(self):
         """Makes Wumpus move towards hero in fastest way possible"""
         #calculates fastest route X-wise
-        absXDistance = self.xCoor - self.heroXCoor #abs for absolute
+        absXDistance = self.xCoor - self.heroXCoor  # abs for absolute
         
         if absXDistance > 0:
-            relXDistance = abs(5 - self.xCoor + self.heroXCoor) #rel for relative
+            relXDistance = abs(5 - self.xCoor + self.heroXCoor)  # rel for relative
         elif absXDistance < 0:
             relXDistance = abs(5 - self.heroXCoor + self.xCoor)
         else:
@@ -39,9 +40,9 @@ class Wumpus:
         absYDistance = self.yCoor - self.heroYCoor
         
         if absYDistance > 0:
-            relYDistance = abs(4 - self.yCoor + self.heroYCoor) ######
+            relYDistance = abs(4 - self.yCoor + self.heroYCoor)  # #####
         elif absYDistance < 0:
-            relYDistance = abs(4 - self.heroYCoor + self.yCoor) ######
+            relYDistance = abs(4 - self.heroYCoor + self.yCoor)  # #####
         else:
             relYDistance = 0
         absYDistance = abs(absYDistance)
@@ -50,8 +51,8 @@ class Wumpus:
         else:
             shortestYDistance = relYDistance
         
-        #movement of Wumpus
-        if shortestXDistance >= shortestYDistance and shortestXDistance != 0: #makes Wumpus move diagonal
+        # movement of Wumpus
+        if shortestXDistance >= shortestYDistance and shortestXDistance != 0:  # makes Wumpus move diagonal
             if self.xCoor - self.heroXCoor > 0:
                 if relXDistance < absXDistance:
                     self.xCoor = self.xCoor + 1
@@ -91,10 +92,3 @@ class Wumpus:
         
     def __str__(self):
         return "Wumpus at {}".format(self.position)
-        
-    
-        
-        
-    
-        
-        
