@@ -3,31 +3,31 @@ from random import randrange
 
 class Wumpus:
     def __init__(self, heroPosition):
-        self.heroXCoor = heroPosition[0]
-        self.heroYCoor = heroPosition[1]
+        self.heroXCor = heroPosition[0]
+        self.heroYCor = heroPosition[1]
         self.spawn()
         
     def spawn(self):
-        self.xCoor = randrange(1, 6)
-        self.yCoor = randrange(1, 5)
-        while abs(self.xCoor - self.heroXCoor) < 2:
-            self.xCoor = randrange(1, 6)
-        while abs(self.yCoor - self.heroYCoor) < 2:
-            self.yCoor = randrange(1, 5)
+        self.xCor = randrange(1, 6)
+        self.yCor = randrange(1, 5)
+        while abs(self.xCor - self.heroXCor) < 2:
+            self.xCor = randrange(1, 6)
+        while abs(self.yCor - self.heroYCor) < 2:
+            self.yCor = randrange(1, 5)
         self.updateposition()
         
     def updateposition(self):
-        self.position = (self.xCoor, self.yCoor)
+        self.position = (self.xCor, self.yCor)
     
     def hunt(self):
         """Makes Wumpus move towards hero in fastest way possible"""
         #calculates fastest route X-wise
-        absXDistance = self.xCoor - self.heroXCoor  # abs for absolute
+        absXDistance = self.xCor - self.heroXCor  # abs for absolute
         
         if absXDistance > 0:
-            relXDistance = abs(5 - self.xCoor + self.heroXCoor)  # rel for relative
+            relXDistance = abs(5 - self.xCor + self.heroXCor)  # rel for relative
         elif absXDistance < 0:
-            relXDistance = abs(5 - self.heroXCoor + self.xCoor)
+            relXDistance = abs(5 - self.heroXCor + self.xCor)
         else:
             relXDistance = 0
         absXDistance = abs(absXDistance)
@@ -37,12 +37,12 @@ class Wumpus:
             shortestXDistance = relXDistance
             
         #calculates fastest route Y-wise
-        absYDistance = self.yCoor - self.heroYCoor
+        absYDistance = self.yCor - self.heroYCor
         
         if absYDistance > 0:
-            relYDistance = abs(4 - self.yCoor + self.heroYCoor)  # #####
+            relYDistance = abs(4 - self.yCor + self.heroYCor)  # #####
         elif absYDistance < 0:
-            relYDistance = abs(4 - self.heroYCoor + self.yCoor)  # #####
+            relYDistance = abs(4 - self.heroYCor + self.yCor)  # #####
         else:
             relYDistance = 0
         absYDistance = abs(absYDistance)
@@ -53,37 +53,37 @@ class Wumpus:
         
         # movement of Wumpus
         if shortestXDistance >= shortestYDistance and shortestXDistance != 0:  # makes Wumpus move diagonal
-            if self.xCoor - self.heroXCoor > 0:
+            if self.xCor - self.heroXCor > 0:
                 if relXDistance < absXDistance:
-                    self.xCoor = self.xCoor + 1
+                    self.xCor = self.xCor + 1
                 else:
-                    self.xCoor = self.xCoor - 1
+                    self.xCor = self.xCor - 1
             else:
                 if relXDistance < absXDistance:
-                    self.xCoor = self.xCoor - 1
+                    self.xCor = self.xCor - 1
                 else:
-                    self.xCoor = self.xCoor + 1
+                    self.xCor = self.xCor + 1
         if shortestXDistance < shortestYDistance and shortestYDistance != 0:
-            if self.yCoor - self.heroYCoor > 0:
+            if self.yCor - self.heroYCor > 0:
                 if relYDistance < absYDistance:
-                    self.yCoor = self.yCoor + 1
+                    self.yCor = self.yCor + 1
                 else:
-                    self.yCoor = self.yCoor - 1
+                    self.yCor = self.yCor - 1
             else:
                 if relYDistance < absYDistance:
-                    self.yCoor = self.yCoor - 1
+                    self.yCor = self.yCor - 1
                 else:
-                    self.yCoor = self.yCoor + 1
+                    self.yCor = self.yCor + 1
                     
         #keep wumpus within map-range
-        if self.xCoor > 5: 
-            self.xCoor = 1
-        if self.xCoor < 1:
-            self.xCoor = 5
-        if self.yCoor > 4:
-            self.yCoor = 1
-        if self.yCoor < 1:
-            self.yCoor = 4
+        if self.xCor > 5: 
+            self.xCor = 1
+        if self.xCor < 1:
+            self.xCor = 5
+        if self.yCor > 4:
+            self.yCor = 1
+        if self.yCor < 1:
+            self.yCor = 4
             
         self.updateposition()
         

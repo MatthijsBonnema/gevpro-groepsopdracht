@@ -17,10 +17,23 @@ class Hero:
 
     def __str__(self):
         return "Name: {} Position:{} Gold:{} Arrows:{} Steps: {}".format(self.name, self.position, self.gold, self.arrows, len(self.path))
+
     def spawn(self):
         self.xCor = randrange(1, 6)
         self.yCor = randrange(1, 5)
         self.updateposition()
+
+    def setwumpuspos(self, poswumpus):
+        self.poswumpus = poswumpus
+
+    def respawn(self):
+        self.xCor = randrange(1, 6)
+        self.yCor = randrange(1, 5)
+        if (self.xCor, self.yCor) != self.poswumpus:
+            self.updateposition()
+        else:
+            self.respawn()
+
 
     def getposition(self):
         return self.xCor, self.yCor
@@ -62,6 +75,7 @@ class Hero:
         self.yCor -= 1  # due to inverted coordinates of UI
         if self.yCor < 1:
             self.yCor = 4
+        print("debug")
         self.updateposition()
         
     def moveright(self):
