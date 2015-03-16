@@ -11,7 +11,14 @@ from wumpus import Wumpus
 
 
 def main():
-    name = input("Welcome Hunter!\nBefore we start the Journey, what is your name?\n")
+    print("--------------------------------------------------------------------------------\n"
+          "|                       Welcome to Hunt the Wumpus! v0.1                       |\n"
+          "|                                                                              |\n"
+          "|      A game created by Jeroen Wilkens, Tomer Gabay en Matthijs Bonnema       |\n"
+          "--------------------------------------------------------------------------------\n")
+
+
+    name = input("Before we start the Journey, what is your name?\n")
 
     hunter = Hero(name)
     spawnHunter = hunter.getposition()
@@ -56,7 +63,7 @@ def main():
         turn = False
 
         if wumpus.getposition() in positionCheckWumpus:
-            print("Wumpy is nearby :O")
+            print("I smell a Wumpus")
 
         for coordinates in rooms.showrooms():
             if coordinates[0] in positionCheck:
@@ -75,7 +82,7 @@ def main():
             if action.lower() == "move" or action.lower() == "shoot":
                 notTurn = False
             else:
-                print("Not a valid input, use move or shoot test")
+                print("Not a valid input, use move or shoot\n")
 
 
         if action.lower() == "move":
@@ -92,7 +99,7 @@ def main():
                         if room[1] == "pit":
                             print("You stepped on a {}\n".format(room[1]))
                             print("You died!\n")
-                            # alive = False
+                            alive = False
                         elif room[1] == "gold":
                             print("You stepped on a {}\n".format(room[1]))
                             hunter.foundgold()
@@ -113,8 +120,6 @@ def main():
                 if hunter.getposition() == wumpus.getposition():
                     print("You have been eaten by Wumpy")
                     alive = False
-        print(wumpus.getposition())
-        print(hunter.getposition())
 
     print("You found {} gold".format(hunter.getgold()))
     print("You had {} arrows left".format(hunter.getarrows()))
