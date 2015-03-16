@@ -22,7 +22,6 @@ def main():
 
     hunter = Hero(name)
     spawnHunter = hunter.getposition()
-    spawnHunter = hunter.getposition()
 
     wumpus = Wumpus(spawnHunter)
     spawnWumpus = wumpus.getposition()
@@ -60,30 +59,38 @@ def main():
             positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
             positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
 
-        turn = False
-
-        if wumpus.getposition() in positionCheckWumpus:
-            print("I smell a Wumpus")
-
         for coordinates in rooms.showrooms():
             if coordinates[0] in positionCheck:
                 items.append(coordinates[1])
         if "gold" in items:
-            print("There is gold near you!\n")
+            print("There is gold near you!")
         if "bat" in items:
-            print("Bats nearby\n")
+            print("Bats nearby")
         if "pit" in items:
-            print("I feel a draft\n")
+            print("I feel a draft")
 
         notTurn = True
 
+        if alive:
+            if hunter.getposition() == wumpus.getposition():
+                print("You have been eaten by Wumpy\n")
+                alive = False
+            if alive:
+                wumpus.hunt()
+
+                if hunter.getposition() == wumpus.getposition():
+                    print("You have been eaten by Wumpy\n")
+                    alive = False
+        if wumpus.getposition() in positionCheckWumpus:
+            print("I smell a Wumpus\n")
+
+
         while notTurn:
-            action = input("Do you want to move or shoot?\n")
+            action = input("\nDo you want to move or shoot?\n")
             if action.lower() == "move" or action.lower() == "shoot":
                 notTurn = False
             else:
                 print("Not a valid input, use move or shoot\n")
-
 
         if action.lower() == "move":
             moveto = input("\nPlease select your move Hunter. up, down, left or right?\n")
@@ -97,29 +104,29 @@ def main():
                 for room in rooms.showrooms():
                     if hunter.getposition() == room[0]:
                         if room[1] == "pit":
-                            print("You stepped on a {}\n".format(room[1]))
+                            print("You stepped on a {}".format(room[1]))
                             print("You died!\n")
                             alive = False
                         elif room[1] == "gold":
-                            print("You stepped on a {}\n".format(room[1]))
+                            print("You stepped on a {}".format(room[1]))
                             hunter.foundgold()
                         elif room[1] == "bat":
                             print("You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
                             hunter.setwumpuspos(wumpus.getposition())
                             hunter.respawn()
         elif action.lower() == "shoot":
-            print("pew pew pew")
+            print("pew pew pew\n")
 
-        if alive:
-            if hunter.getposition() == wumpus.getposition():
-                print("You have been eaten by Wumpy")
-                alive = False
-            if alive:
-                wumpus.hunt()
-
-                if hunter.getposition() == wumpus.getposition():
-                    print("You have been eaten by Wumpy")
-                    alive = False
+        # if alive:
+        #     if hunter.getposition() == wumpus.getposition():
+        #         print("You have been eaten by Wumpy\n")
+        #         alive = False
+        #     if alive:
+        #         wumpus.hunt()
+        #
+        #         if hunter.getposition() == wumpus.getposition():
+        #             print("You have been eaten by Wumpy\n")
+        #             alive = False
 
     print("You found {} gold".format(hunter.getgold()))
     print("You had {} arrows left".format(hunter.getarrows()))
