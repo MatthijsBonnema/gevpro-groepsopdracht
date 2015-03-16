@@ -81,6 +81,7 @@ def main():
                 if hunter.getposition() == wumpus.getposition():
                     print("You have been eaten by Wumpy\n")
                     alive = False
+                    ### Aanroep Highscore functie Hier ###
         if wumpus.getposition() in positionCheckWumpus:
             print("I smell a Wumpus\n")
 
@@ -107,6 +108,7 @@ def main():
                             print("You stepped on a {}".format(room[1]))
                             print("You died!\n")
                             alive = False
+                            ### Highscore functie hier aanroepen ###
                         elif room[1] == "gold":
                             print("You stepped on a {}".format(room[1]))
                             hunter.foundgold()
