@@ -9,6 +9,8 @@
 
 from PyQt4 import QtCore, QtGui
 import sys
+from functools import partial
+import hero
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -32,19 +34,33 @@ class Ui_Form(QtGui.QWidget):
     def keyPressEvent(self, event):
         if type(event) == QtGui.QKeyEvent:
             if event.key() == QtCore.Qt.Key_W:
-                print("Up")
+                self.eventHandler("up")
             if event.key() == QtCore.Qt.Key_S:
-                print("Down")
+                self.eventHandler("down")
             if event.key() == QtCore.Qt.Key_A:
-                print("Left")
+                self.eventHandler("left")
             if event.key() == QtCore.Qt.Key_D:
-                print("Right")
+                self.eventHandler("right")
             if event.key() == QtCore.Qt.Key_Space:
-                print("Shoot")
+                self.eventHandler("shoot")
             if event.key() == QtCore.Qt.Key_M:
-                print("Move")
+                self.eventHandler("move")
         else:
             event.ignore()
+
+    def eventHandler(self, event):
+            if event == "up":
+                self.movehero("up")
+            if event == "down":
+                self.movehero("down")
+            if event == "left":
+                self.movehero("left")
+            if event == "right":
+                self.movehero("right")
+            if event == "shoot":
+                print("Shoot")
+            if event == "move":
+                print("Move")
 
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
@@ -128,10 +144,77 @@ class Ui_Form(QtGui.QWidget):
         self.scene = QtGui.QGraphicsScene(self)
         self.scene.setSceneRect(1, 4, 5, 4)
         self.graphicsView.scale(1, -1)
+
+
         self.graphicsView.setStyleSheet("border: 0px")
 
-        self.graphicsView.setScene(self.scene)
+        self.rooms = QtGui.QGraphicsPixmapItem()
+        self.rooms.setPixmap(QtGui.QPixmap("rooms.png"))
+        self.rooms.setPos(-587, -387)
+        self.scene.addItem(self.rooms)
+        self.graphicsView.setRenderHint(QtGui.QPainter.Antialiasing)
 
+        self.graphicsView.setScene(self.scene)
+        self.sethero()
+        # self.setArrowAmount()
+
+        self.right.clicked.connect(self.eventHandlerRight)
+        self.left.clicked.connect(self.eventHandlerLeft)
+        self.up.clicked.connect(self.eventHandlerUp)
+        self.down.clicked.connect(self.eventHandlerDown)
+        self.move.clicked.connect(self.eventHandlerMove)
+        self.shoot.clicked.connect(self.eventHandlerShoot)
+
+    def setArrowAmount(self, arrows):
+        self.arrows_amount.display(arrows)
+
+    def eventHandlerRight(self):
+        self.eventHandler("right")
+
+    def eventHandlerLeft(self):
+        self.eventHandler("left")
+
+    def eventHandlerUp(self):
+        self.eventHandler("up")
+
+    def eventHandlerDown(self):
+        self.eventHandler("down")
+
+    def eventHandlerMove(self):
+        self.eventHandler("move")
+
+    def eventHandlerShoot(self):
+        self.eventHandler("shoot")
+
+    def movehero(self, direction):
+        if direction == "up":
+            self.hero.setPixmap(QtGui.QPixmap('hero_down.png'))
+            self.hero.moveBy(0, 195)
+        if direction == "down":
+            self.hero.setPixmap(QtGui.QPixmap('hero_up.png'))
+            self.hero.moveBy(0, -195)
+        if direction == "left":
+            self.hero.setPixmap(QtGui.QPixmap('hero_left.png'))
+            self.hero.moveBy(-240, 0)
+        if direction == "right":
+            self.hero.setPixmap(QtGui.QPixmap('hero_right.png'))
+            self.hero.moveBy(240, 0)
+
+
+
+    def sethero(self):
+        self.hero = QtGui.QGraphicsPixmapItem()
+        self.hero.setPixmap(QtGui.QPixmap("hero_up.png"))
+        self.hero.setPos(-497, -319)
+        self.scene.addItem(self.hero)
+
+
+def run():
+    app = QtGui.QApplication(sys.argv)
+    app.setStyle('cleanlooks')
+    ui = Ui_Form()
+    ui.show()
+    sys.exit(app.exec_())
 
 
 if __name__ == "__main__":
