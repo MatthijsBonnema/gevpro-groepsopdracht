@@ -49,75 +49,75 @@ class Hero:
     def foundgold(self):
         self.gold += 1
         return self.gold
-        
+
     def shoot(self, poswumpus):
-		self.arXcor = self.xCor
-		self.arYcor = self.yCor
-		self.arPath = [] #follows path of arrow
-		self.arDir = [] #follows direction of arrow
-		#while enter is not pressed and self.arPath < 5(?!)
-		#if pijltje omhoog:
-		self.shootup()
-		#if pijltje omlaag:
-		self.shootdown()
-		#if pijltje naar links:
-		self.shootleft()
-		#if pijltje naar rechts:
-		self.shootright()
-		
-		#if len(self.arPath) == 5:
-			#tell user to press enter or backwards his arrow direction
-			
-		#if enter is pressed:
+        self.arXcor = self.xCor
+        self.arYcor = self.yCor
+        self.arPath = [] #follows path of arrow
+        self.arDir = [] #follows direction of arrow
+        #while enter is not pressed and self.arPath < 5(?!)
+        #if pijltje omhoog:
+        self.shootup()
+        #if pijltje omlaag:
+        self.shootdown()
+        #if pijltje naar links:
+        self.shootleft()
+        #if pijltje naar rechts:
+        self.shootright()
+
+        #if len(self.arPath) == 5:
+        #tell user to press enter or backwards his arrow direction
+
+        #if enter is pressed:
         self.arrows -= 1
         if poswumpus in self.arPath:
-			self.victory = True
-			
+            self.victory = True
+
         return self.arrows, self.victory
-        
+
     def shootup(self):
-		self.arYcor -= 1
-		if self.arDir[-1] == "down":
-			del self.arDir[-1]
-			del self.arPath[-1]
-		else:
-			self.arDir.append('up')
-			if self.arYcor < 1:
-				self.arYcor = 4
-			self.arPath.append((self.arXcor, self.arYcor))
-	
-	def shootleft(self):
-		self.arXcor -= 1
-		if self.arDir[-1] == "right":
-			del self.arDir[-1]
-			del self.arPath[-1]
-		else:
-			self.arDir.append('left')
-			if self.arXcor < 1:
-				self.arXcor = 5
-			self.arPath.append((self.arXcor, self.arYcor))
-			
-	def shootright(self):
-		self.arXcor += 1
-		if self.arDir[-1] == "left":
-			del self.arDir[-1]
-			del self.arPath[-1]
-		else:
-			self.arDir.append('right')
-			if self.arXcor > 5:
-				self.arXcor = 1
-			self.arPath.append((self.arXcor, self.arYcor))
-			
-	def shootdown(self):
-		self.arYcor += 1
-		if self.arDir[-1] == "up":
-			del self.arDir[-1]
-			del self.arPath[-1]
-		else:
-			self.arDir.append('down')
-			if self.arYcor > 4:
-				arYcor = 1
-			self.arPath.append((self.arXcor, self.arYcor))
+        self.arYcor -= 1
+        if self.arDir[-1] == "down":
+            del self.arDir[-1]
+            del self.arPath[-1]
+        else:
+            self.arDir.append('up')
+            if self.arYcor < 1:
+                self.arYcor = 4
+            self.arPath.append((self.arXcor, self.arYcor))
+
+    def shootleft(self):
+        self.arXcor -= 1
+        if self.arDir[-1] == "right":
+            del self.arDir[-1]
+            del self.arPath[-1]
+        else:
+            self.arDir.append('left')
+            if self.arXcor < 1:
+                self.arXcor = 5
+            self.arPath.append((self.arXcor, self.arYcor))
+
+    def shootright(self):
+        self.arXcor += 1
+        if self.arDir[-1] == "left":
+            del self.arDir[-1]
+            del self.arPath[-1]
+        else:
+            self.arDir.append('right')
+            if self.arXcor > 5:
+                self.arXcor = 1
+            self.arPath.append((self.arXcor, self.arYcor))
+
+    def shootdown(self):
+        self.arYcor += 1
+        if self.arDir[-1] == "up":
+            del self.arDir[-1]
+            del self.arPath[-1]
+        else:
+            self.arDir.append('down')
+            if self.arYcor > 4:
+                arYcor = 1
+            self.arPath.append((self.arXcor, self.arYcor))
 
     def move(self, moveto):
         if moveto == "up":
@@ -134,35 +134,35 @@ class Hero:
             return True
         else:
             return False
-        
+
     def moveup(self):
         self.yCor -= 1  # due to inverted coordinates of UI
         if self.yCor < 1:
             self.yCor = 4
         self.updateposition()
-        
+
     def moveright(self):
         self.xCor += 1
         if self.xCor > 5:
             self.xCor = 1
         self.updateposition()
-        
+
     def movedown(self):
         self.yCor += 1  # due to inverted coordinates of UI
         if self.yCor > 4:
             self.yCor = 1
         self.updateposition()
-    
-    def moveleft(self): 
+
+    def moveleft(self):
         self.xCor -= 1
         if self.xCor < 1:
             self.xCor = 5
         self.updateposition()
-        
+
     def updateposition(self):
         self.position = (self.xCor, self.yCor)
         self.path.append(self.position)
         return self.position
-    
+
     def getpath(self):
         return self.path
