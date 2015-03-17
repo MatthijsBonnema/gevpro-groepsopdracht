@@ -9,8 +9,10 @@
 
 from PyQt4 import QtCore, QtGui
 import sys
-from functools import partial
-import hero
+from room_generator import RoomGenerator
+from hero import Hero
+from wumpus import Wumpus
+from time import sleep
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -50,16 +52,22 @@ class Ui_Form(QtGui.QWidget):
 
     def eventHandler(self, event):
             if event == "up":
+                self.hunter.moveright()
                 self.movehero("up")
             if event == "down":
+                self.hunter.movedown()
                 self.movehero("down")
             if event == "left":
+                self.hunter.moveleft()
                 self.movehero("left")
             if event == "right":
+                self.hunter.moveright()
                 self.movehero("right")
             if event == "shoot":
+                self.hunter.shoot()
                 print("Shoot")
             if event == "move":
+
                 print("Move")
 
     def setupUi(self, Form):
@@ -120,6 +128,7 @@ class Ui_Form(QtGui.QWidget):
         self.console = QtGui.QLabel(Form)
         self.console.setText(_fromUtf8(""))
         self.console.setObjectName(_fromUtf8("console"))
+        self.console.setFont(font)
         self.gridLayout_4.addWidget(self.console, 0, 0, 3, 4)
         self.gridLayout.addLayout(self.gridLayout_4, 2, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 1, 0, 1, 1)
@@ -155,8 +164,14 @@ class Ui_Form(QtGui.QWidget):
         self.graphicsView.setRenderHint(QtGui.QPainter.Antialiasing)
 
         self.graphicsView.setScene(self.scene)
-        self.sethero()
-        # self.setArrowAmount()
+
+        self.setConsoleMessage("Welcome to Hunt the Wumpus v1.0")
+
+        self.hunter = Hero("Hero")
+        hunterx, huntery = self.coordConverter(self.hunter.getposition())
+        self.sethero(hunterx, huntery)
+        self.wumpus = Wumpus(self.hunter.getposition())
+        self.rooms = RoomGenerator(self.hunter.getposition(), self.wumpus.getposition())
 
         self.right.clicked.connect(self.eventHandlerRight)
         self.left.clicked.connect(self.eventHandlerLeft)
@@ -164,6 +179,13 @@ class Ui_Form(QtGui.QWidget):
         self.down.clicked.connect(self.eventHandlerDown)
         self.move.clicked.connect(self.eventHandlerMove)
         self.shoot.clicked.connect(self.eventHandlerShoot)
+
+        self.workThread = WorkerThread()
+        self.connect(self.workThread, QtCore.SIGNAL("update(QString)"), self.test123, QtCore.Qt.DirectConnection)
+        self.workThread.start()
+
+    def test123(self):
+        self.setConsoleMessage("test")
 
     def setArrowAmount(self, arrows):
         self.arrows_amount.display(arrows)
@@ -186,6 +208,9 @@ class Ui_Form(QtGui.QWidget):
     def eventHandlerShoot(self):
         self.eventHandler("shoot")
 
+    def setConsoleMessage(self, message):
+        self.console.setText(_translate("Form", message, None))
+
     def movehero(self, direction):
         if direction == "up":
             self.hero.setPixmap(QtGui.QPixmap('hero_down.png'))
@@ -200,14 +225,160 @@ class Ui_Form(QtGui.QWidget):
             self.hero.setPixmap(QtGui.QPixmap('hero_right.png'))
             self.hero.moveBy(240, 0)
 
-
-
-    def sethero(self):
+    def sethero(self, hunterx, huntery):
         self.hero = QtGui.QGraphicsPixmapItem()
         self.hero.setPixmap(QtGui.QPixmap("hero_up.png"))
-        self.hero.setPos(-497, -319)
+        self.hero.setPos(hunterx, huntery)
         self.scene.addItem(self.hero)
 
+    def coordConverter(self, coord):
+        if coord == (1, 1):
+            return -497, 266
+        if coord == (1, 2):
+            return -497, 71
+        if coord == (1, 3):
+            return -497, -124
+        if coord == (1, 4):
+            return -497, -319
+        if coord == (2, 1):
+            return -257, 266
+        if coord == (2, 2):
+            return -257, 71
+        if coord == (2, 3):
+            return -257, -124
+        if coord == (2, 4):
+            return -257, -319
+        if coord == (3, 1):
+            return -17, 266
+        if coord == (3, 2):
+            return -17, 72
+        if coord == (3, 3):
+            return -17, -124
+        if coord == (3, 4):
+            return -17, -319
+        if coord == (4, 1):
+            return 223, 266
+        if coord == (4, 2):
+            return 223, 72
+        if coord == (4, 3):
+            return 223, -124
+        if coord == (4, 4):
+            return 223, -319
+        if coord == (5, 1):
+            return 463, 266
+        if coord == (5, 2):
+            return 463, 72
+        if coord == (5, 3):
+            return 463, -124
+        if coord == (5, 4):
+            return 463, -319
+
+
+
+class WorkerThread(QtCore.QThread):
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    def run(self):
+        alive = True
+
+        while alive:
+
+            items = []
+
+            # check if something is near
+            xCor, yCor = ui.hunter.getposition()
+
+            if ui.hunter.getposition()[0] == 1:
+                positionCheck = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
+                positionCheckWumpus = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
+            elif ui.hunter.getposition()[0] == 5:
+                positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (1, yCor), (xCor - 1, yCor)]
+                positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (1, yCor), (xCor - 1, yCor)]
+            elif ui.hunter.getposition()[1] == 1:
+                positionCheck = [(xCor, yCor + 1), (xCor, 4), (xCor + 1, yCor), (xCor - 1, yCor)]
+                positionCheckWumpus = [(xCor, yCor + 1), (xCor, 4), (xCor + 1, yCor), (xCor - 1, yCor)]
+            elif ui.hunter.getposition()[1] == 4:
+                positionCheck = [(xCor, 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
+                positionCheckWumpus = [(xCor, 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
+            else:
+                positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
+                positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
+
+            for coordinates in ui.rooms.showrooms():
+                if coordinates[0] in positionCheck:
+                    items.append(coordinates[1])
+            if "gold" in items:
+                print("There is gold near you!")
+            if "bat" in items:
+                print("Bats nearby")
+            if "pit" in items:
+                print("I feel a draft")
+
+            notTurn = True
+
+            if alive:
+                if ui.hunter.getposition() == ui.wumpus.getposition():
+                    print("You have been eaten by Wumpy\n")
+                    alive = False
+                if alive:
+                    ui.wumpus.hunt()
+
+                    if ui.hunter.getposition() == ui.wumpus.getposition():
+                        print("You have been eaten by Wumpy\n")
+                        alive = False
+                        ### Aanroep Highscore functie Hier ###
+            if ui.wumpus.getposition() in positionCheckWumpus:
+                print("I smell a Wumpus\n")
+
+
+            while notTurn:
+                ui.setConsoleMessage("Do you want to move or shoot?")
+
+                if action.lower() == "move" or action.lower() == "shoot":
+                    notTurn = False
+                else:
+                    print("Not a valid input, use move or shoot\n")
+
+            if action.lower() == "move":
+                moveto = input("\nPlease select your move Hunter. up, down, left or right?\n")
+                move = ui.hunter.move(moveto)
+
+                if not move:  # if move == False
+                    print("Not a valid input!\n")
+                else:
+                    print("You moved {}!\n".format(moveto))
+
+                    for room in ui.rooms.showrooms():
+                        if ui.hunter.getposition() == room[0]:
+                            if room[1] == "pit":
+                                print("You stepped on a {}".format(room[1]))
+                                print("You died!\n")
+                                alive = False
+                                ### Highscore functie hier aanroepen ###
+                            elif room[1] == "gold":
+                                print("You stepped on a {}".format(room[1]))
+                                ui.hunter.foundgold()
+                            elif room[1] == "bat":
+                                print("You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
+                                ui.hunter.setwumpuspos(ui.wumpus.getposition())
+                                ui.hunter.respawn()
+            elif action.lower() == "shoot":
+                print("pew pew pew\n")
+
+            # if alive:
+            #     if self.hunter.getposition() == wumpus.getposition():
+            #         print("You have been eaten by Wumpy\n")
+            #         alive = False
+            #     if alive:
+            #         wumpus.hunt()
+            #
+            #         if self.hunter.getposition() == wumpus.getposition():
+            #             print("You have been eaten by Wumpy\n")
+            #             alive = False
+
+        print("You found {} gold".format(ui.hunter.getgold()))
+        print("You had {} arrows left".format(ui.hunter.getarrows()))
 
 def run():
     app = QtGui.QApplication(sys.argv)
