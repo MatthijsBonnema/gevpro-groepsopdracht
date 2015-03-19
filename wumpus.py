@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+# File: wumpus.py
+# Author: Tomer Gabay
+# Date: 03/11/15
+# Info:
+
 from random import randrange
 
 
