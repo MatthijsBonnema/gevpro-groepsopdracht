@@ -67,7 +67,7 @@ class Ui_Form(QtGui.QWidget):
                 self.hunter.shoot()
                 print("Shoot")
             if event == "move":
-
+                self.workThread.action = "move"
                 print("Move")
 
     def setupUi(self, Form):
@@ -181,8 +181,12 @@ class Ui_Form(QtGui.QWidget):
         self.shoot.clicked.connect(self.eventHandlerShoot)
 
         self.workThread = WorkerThread()
-        self.connect(self.workThread, QtCore.SIGNAL("update(QString)"), self.test123, QtCore.Qt.DirectConnection)
         self.workThread.start()
+
+        self.connect(self.workThread, QtCore.SIGNAL("action"), self.actionreset, QtCore.Qt.DirectConnection)
+
+    def actionreset(self):
+        self.workThread.action = None
 
     def test123(self):
         self.setConsoleMessage("test")
@@ -212,18 +216,23 @@ class Ui_Form(QtGui.QWidget):
         self.console.setText(_translate("Form", message, None))
 
     def movehero(self, direction):
-        if direction == "up":
-            self.hero.setPixmap(QtGui.QPixmap('hero_down.png'))
-            self.hero.moveBy(0, 195)
-        if direction == "down":
-            self.hero.setPixmap(QtGui.QPixmap('hero_up.png'))
-            self.hero.moveBy(0, -195)
-        if direction == "left":
-            self.hero.setPixmap(QtGui.QPixmap('hero_left.png'))
-            self.hero.moveBy(-240, 0)
-        if direction == "right":
-            self.hero.setPixmap(QtGui.QPixmap('hero_right.png'))
-            self.hero.moveBy(240, 0)
+        if self.moveturn == True:
+            if direction == "up":
+                self.workThread.direction = "up"
+                self.hero.setPixmap(QtGui.QPixmap('hero_down.png'))
+                self.hero.moveBy(0, 195)
+            if direction == "down":
+                self.workThread.direction = "down"
+                self.hero.setPixmap(QtGui.QPixmap('hero_up.png'))
+                self.hero.moveBy(0, -195)
+            if direction == "left":
+                self.workThread.direction = "left"
+                self.hero.setPixmap(QtGui.QPixmap('hero_left.png'))
+                self.hero.moveBy(-240, 0)
+            if direction == "right":
+                self.workThread.direction = "right"
+                self.hero.setPixmap(QtGui.QPixmap('hero_right.png'))
+                self.hero.moveBy(240, 0)
 
     def sethero(self, hunterx, huntery):
         self.hero = QtGui.QGraphicsPixmapItem()
@@ -273,6 +282,22 @@ class Ui_Form(QtGui.QWidget):
         if coord == (5, 4):
             return 463, -319
 
+    def hunterposition(self):
+        self.workThread.hunterposition = self.hunter.getposition()
+
+    def setMoveTurn(self):
+        self.moveturn = True
+
+    def resetMoveTurn(self):
+        self.moveturn = False
+
+    def respawn(self):
+        ui.hunter.respawn()
+        xCor, yCor = self.coordConverter(self.hunter.getposition())
+        self.hero.setPos(xCor, yCor)
+
+    def died(self):
+        sys.exit()
 
 
 class WorkerThread(QtCore.QThread):
@@ -280,14 +305,17 @@ class WorkerThread(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
     def run(self):
+        sleep(1)
+        ui.resetMoveTurn()
         alive = True
-
+        self.action = None
+        self.direction = None
         while alive:
-
             items = []
 
             # check if something is near
-            xCor, yCor = ui.hunter.getposition()
+            ui.hunterposition()
+            xCor, yCor = self.hunterposition
 
             if ui.hunter.getposition()[0] == 1:
                 positionCheck = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
@@ -334,20 +362,20 @@ class WorkerThread(QtCore.QThread):
 
             while notTurn:
                 ui.setConsoleMessage("Do you want to move or shoot?")
+                self.emit(QtCore.SIGNAL("action"))
+                self.action = None
+                while self.action == None:
+                    sleep(0.5)
 
-                if action.lower() == "move" or action.lower() == "shoot":
-                    notTurn = False
-                else:
-                    print("Not a valid input, use move or shoot\n")
+                if self.action.lower() == "move":
+                    ui.setMoveTurn()
+                    ui.setConsoleMessage("\nPlease select your move Hunter. up, down, left or right?\n")
+                    self.direction = None
+                    while self.direction == None:
+                        sleep(0.1)
+                    ui.resetMoveTurn()
 
-            if action.lower() == "move":
-                moveto = input("\nPlease select your move Hunter. up, down, left or right?\n")
-                move = ui.hunter.move(moveto)
-
-                if not move:  # if move == False
-                    print("Not a valid input!\n")
-                else:
-                    print("You moved {}!\n".format(moveto))
+                    ui.setConsoleMessage("You moved {}!\n".format(self.action))
 
                     for room in ui.rooms.showrooms():
                         if ui.hunter.getposition() == room[0]:
@@ -362,23 +390,21 @@ class WorkerThread(QtCore.QThread):
                             elif room[1] == "bat":
                                 print("You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
                                 ui.hunter.setwumpuspos(ui.wumpus.getposition())
-                                ui.hunter.respawn()
-            elif action.lower() == "shoot":
-                print("pew pew pew\n")
+                                ui.respawn()
+                elif self.action.lower() == "shoot":
+                    print("pew pew pew\n")
 
-            # if alive:
-            #     if self.hunter.getposition() == wumpus.getposition():
-            #         print("You have been eaten by Wumpy\n")
-            #         alive = False
-            #     if alive:
-            #         wumpus.hunt()
-            #
-            #         if self.hunter.getposition() == wumpus.getposition():
-            #             print("You have been eaten by Wumpy\n")
-            #             alive = False
+                self.action = None
 
         print("You found {} gold".format(ui.hunter.getgold()))
         print("You had {} arrows left".format(ui.hunter.getarrows()))
+        ui.died()
+
+    def actionMove(self):
+        self.action = "move"
+
+    def actionShoot(self):
+        self.action = "shoot"
 
 def run():
     app = QtGui.QApplication(sys.argv)
