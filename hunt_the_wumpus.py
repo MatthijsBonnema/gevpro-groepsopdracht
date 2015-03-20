@@ -168,9 +168,16 @@ class Ui_Form(QtGui.QWidget):
 
         self.graphicsView.setScene(self.scene)
 
+        name, ok = QtGui.QInputDialog.getText(self, 'Hunt the Wumpus', 'Before we start Hunter, what is your name?\n')
+        if name == "":
+            name = "Anonymous"
+
         self.setConsoleMessage("Welcome to Hunt the Wumpus v1.0")
 
-        self.hunter = Hero("Hero")
+        self.hunter = Hero(name)
+
+        print(self.hunter)
+
         hunterx, huntery = self.coordConverter(self.hunter.getposition())
         self.sethero(hunterx, huntery)
         self.wumpus = Wumpus(self.hunter.getposition())
@@ -204,8 +211,6 @@ class Ui_Form(QtGui.QWidget):
     def setArrowAmount(self):
         arrows = self.hunter.getarrows()
         self.arrows_amount.display(arrows)
-
-
 
     def eventHandlerRight(self):
         self.eventHandler("right")
