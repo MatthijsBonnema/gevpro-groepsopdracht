@@ -45,6 +45,12 @@ class Ui_Form(QtGui.QWidget):
                 self.eventHandler("shoot")
             if event.key() == QtCore.Qt.Key_M:
                 self.eventHandler("move")
+
+
+            if event.key() == QtCore.Qt.Key_H:
+                self.wumpus.hunt(ui.hunter.getposition())
+                print("Wumpus", self.wumpus.getposition())
+
         else:
             event.ignore()
 
@@ -385,56 +391,51 @@ class WorkerThread(QtCore.QThread):
                         if str(rooms) == str(ui.wumpus.getposition()):
                             print("I smell a Wumpus\n")
 
-
-            notTurn = True
-
             if alive:
                 if ui.hunter.getposition() == ui.wumpus.getposition():
                     print("You have been eaten by Wumpy\n")
                     alive = False
                 if alive:
-                    ui.wumpus.hunt()
+                    ui.wumpus.hunt(ui.hunter.getposition())
 
                     if ui.hunter.getposition() == ui.wumpus.getposition():
                         print("You have been eaten by Wumpy\n")
                         alive = False
 
-            # while notTurn:
-            if True:
-                ui.setConsoleMessage("Do you want to move or shoot?")
-                self.emit(QtCore.SIGNAL("action"))
-                self.action = None
-                while self.action == None:
-                    sleep(0.5)
+            ui.setConsoleMessage("Do you want to move or shoot?")
+            self.emit(QtCore.SIGNAL("action"))
+            self.action = None
+            while self.action == None:
+                sleep(0.5)
 
-                if self.action.lower() == "move":
-                    ui.setMoveTurn()
-                    ui.setConsoleMessage("\nPlease select your move Hunter. up, down, left or right?\n")
-                    self.direction = None
-                    while self.direction == None:
-                        sleep(0.1)
-                    ui.resetMoveTurn()
+            if self.action.lower() == "move":
+                ui.setMoveTurn()
+                ui.setConsoleMessage("\nPlease select your move Hunter. up, down, left or right?\n")
+                self.direction = None
+                while self.direction == None:
+                    sleep(0.1)
+                ui.resetMoveTurn()
 
-                    ui.setConsoleMessage("You moved {}!\n".format(self.action))
+                ui.setConsoleMessage("You moved {}!\n".format(self.action))
 
-                    for room in ui.roomsmap.showrooms():
-                        if ui.hunter.getposition() == room[0]:
-                            if room[1] == "pit":
-                                print("You stepped on a {}".format(room[1]))
-                                print("You died!\n")
-                                alive = False
-                            elif room[1] == "gold":
-                                print("You stepped on a {}".format(room[1]))
-                                self.emit(QtCore.SIGNAL("gold"))
-                            elif room[1] == "bat":
-                                print("You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
-                                ui.hunter.setwumpuspos(ui.wumpus.getposition())
-                                ui.respawn()
-                elif self.action.lower() == "shoot":
-                    print("pew pew pew\n")
-                    self.emit(QtCore.SIGNAL("arrow"))
+                for room in ui.roomsmap.showrooms():
+                    if ui.hunter.getposition() == room[0]:
+                        if room[1] == "pit":
+                            print("You stepped on a {}".format(room[1]))
+                            print("You died!\n")
+                            alive = False
+                        elif room[1] == "gold":
+                            print("You stepped on a {}".format(room[1]))
+                            self.emit(QtCore.SIGNAL("gold"))
+                        elif room[1] == "bat":
+                            print("You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
+                            ui.hunter.setwumpuspos(ui.wumpus.getposition())
+                            ui.respawn()
+            elif self.action.lower() == "shoot":
+                print("pew pew pew\n")
+                self.emit(QtCore.SIGNAL("arrow"))
 
-                self.action = None
+            self.action = None
 
         print("You found {} gold".format(ui.hunter.getgold()))
         print("You had {} arrows left".format(ui.hunter.getarrows()))

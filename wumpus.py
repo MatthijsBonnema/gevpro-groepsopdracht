@@ -5,7 +5,7 @@
 # Info:
 
 from random import randrange
-
+import hero
 
 class Wumpus:
     def __init__(self, heroPosition):
@@ -25,7 +25,8 @@ class Wumpus:
     def updateposition(self):
         self.position = (self.xCor, self.yCor)
     
-    def hunt(self):
+    def hunt(self, heroposition):
+        self.heroXCor, self.heroYCor = heroposition
         """Makes Wumpus move towards hero in fastest way possible"""
         #calculates fastest route X-wise
         absXDistance = self.xCor - self.heroXCor  # abs for absolute
