@@ -11,6 +11,7 @@ from room_generator import RoomGenerator
 from hero import Hero
 from wumpus import Wumpus
 from time import sleep
+import highscore
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -331,9 +332,12 @@ class Ui_Form(QtGui.QWidget):
         self.hero.setPos(xCor, yCor)
 
     def died(self):
+        print("You found {} gold".format(self.hunter.getgold()))
+        print("You had {} arrows left".format(self.hunter.getarrows()))
         self.workThread.quit()
         ##show highscore en replay scherm##
-
+        highscore.highscore("Hunter_test", self.hunter.getgold(), self.hunter.getarrows(),
+                            len(self.hunter.getpath()), False)
 
 class WorkerThread(QtCore.QThread):
     def __init__(self):
@@ -395,12 +399,14 @@ class WorkerThread(QtCore.QThread):
                 if ui.hunter.getposition() == ui.wumpus.getposition():
                     print("You have been eaten by Wumpy\n")
                     alive = False
+                    ui.died()
                 if alive:
                     ui.wumpus.hunt(ui.hunter.getposition())
 
                     if ui.hunter.getposition() == ui.wumpus.getposition():
                         print("You have been eaten by Wumpy\n")
                         alive = False
+                        ui.died()
 
             ui.setConsoleMessage("Do you want to move or shoot?")
             self.emit(QtCore.SIGNAL("action"))
@@ -437,8 +443,7 @@ class WorkerThread(QtCore.QThread):
 
             self.action = None
 
-        print("You found {} gold".format(ui.hunter.getgold()))
-        print("You had {} arrows left".format(ui.hunter.getarrows()))
+
 
         ui.died()
 
