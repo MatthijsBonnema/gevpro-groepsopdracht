@@ -8,6 +8,8 @@ def highscore(name, gold_amount, arrowsleft, number_of_steps, won):
     else:
         score = 0 - (number_of_steps * 100) + (arrowsleft * 250) + (gold_amount * 1000)
 
+    print("Score: ", score)
+
     outfile_name = "highscores.txt"
     outfile = open(outfile_name, "w")
 

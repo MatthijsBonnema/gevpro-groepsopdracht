@@ -331,13 +331,13 @@ class Ui_Form(QtGui.QWidget):
         xCor, yCor = self.coordConverter(self.hunter.getposition())
         self.hero.setPos(xCor, yCor)
 
-    def died(self):
+    def died(self, won):
         print("You found {} gold".format(self.hunter.getgold()))
         print("You had {} arrows left".format(self.hunter.getarrows()))
         self.workThread.quit()
         ##show highscore en replay scherm##
         highscore.highscore("Hunter_test", self.hunter.getgold(), self.hunter.getarrows(),
-                            len(self.hunter.getpath()), False)
+                            len(self.hunter.getpath()), won)
 
 class WorkerThread(QtCore.QThread):
     def __init__(self):
@@ -399,14 +399,14 @@ class WorkerThread(QtCore.QThread):
                 if ui.hunter.getposition() == ui.wumpus.getposition():
                     print("You have been eaten by Wumpy\n")
                     alive = False
-                    ui.died()
+                    ui.died(False)
                 if alive:
                     ui.wumpus.hunt(ui.hunter.getposition())
 
                     if ui.hunter.getposition() == ui.wumpus.getposition():
                         print("You have been eaten by Wumpy\n")
                         alive = False
-                        ui.died()
+                        ui.died(False)
 
             ui.setConsoleMessage("Do you want to move or shoot?")
             self.emit(QtCore.SIGNAL("action"))
@@ -445,7 +445,7 @@ class WorkerThread(QtCore.QThread):
 
 
 
-        ui.died()
+        ui.died(False)
 
     def actionMove(self):
         self.action = "move"
