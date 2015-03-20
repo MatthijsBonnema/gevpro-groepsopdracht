@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+# File: hunt_the_wumpus.py
+# Author: Matthijs Bonnema
+# Date: 03/20/15
+# Info:
 
-# Form implementation generated from reading ui file 'hunt_the_wumpus.ui'
-#
-# Created: Mon Mar 16 14:32:52 2015
-#      by: PyQt4 UI code generator 4.10.4
-#
-# WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 import sys
