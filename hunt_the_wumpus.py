@@ -342,8 +342,8 @@ class WorkerThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("gold"))
         self.emit(QtCore.SIGNAL("arrow"))
 
+
         while alive:
-            print(alive)
             items = []
 
             # check if something is near
@@ -366,17 +366,25 @@ class WorkerThread(QtCore.QThread):
                 positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
                 positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
 
-            print(positionCheck)
-
             for coordinates in ui.roomsmap.showrooms():
-                if coordinates[0] in positionCheck:
-                    items.append(coordinates[1])
+                for rooms in positionCheck:
+                    if str(coordinates[0]) == str(rooms):
+                        items.append(coordinates[1])
             if "gold" in items:
                 print("There is gold near you!")
             if "bat" in items:
                 print("Bats nearby")
             if "pit" in items:
                 print("I feel a draft")
+
+            print("Wumpus", ui.wumpus.getposition())
+
+            for coordinates in ui.roomsmap.showrooms():
+                for rooms in positionCheckWumpus:
+                    if str(coordinates[0]) == str(rooms):
+                        if str(rooms) == str(ui.wumpus.getposition()):
+                            print("I smell a Wumpus\n")
+
 
             notTurn = True
 
@@ -390,9 +398,6 @@ class WorkerThread(QtCore.QThread):
                     if ui.hunter.getposition() == ui.wumpus.getposition():
                         print("You have been eaten by Wumpy\n")
                         alive = False
-                        ### Aanroep Highscore functie Hier ###
-            if ui.wumpus.getposition() in positionCheckWumpus:
-                print("I smell a Wumpus\n")
 
             # while notTurn:
             if True:
@@ -418,7 +423,6 @@ class WorkerThread(QtCore.QThread):
                                 print("You stepped on a {}".format(room[1]))
                                 print("You died!\n")
                                 alive = False
-                                ### Highscore functie hier aanroepen ###
                             elif room[1] == "gold":
                                 print("You stepped on a {}".format(room[1]))
                                 self.emit(QtCore.SIGNAL("gold"))
