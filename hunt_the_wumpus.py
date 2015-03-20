@@ -52,23 +52,21 @@ class Ui_Form(QtGui.QWidget):
 
     def eventHandler(self, event):
             if event == "up":
-                self.hunter.moveright()
+                # self.hunter.moveup()
                 self.movehero("up")
             if event == "down":
-                self.hunter.movedown()
+                # self.hunter.movedown()
                 self.movehero("down")
             if event == "left":
-                self.hunter.moveleft()
+                # self.hunter.moveleft()
                 self.movehero("left")
             if event == "right":
-                self.hunter.moveright()
+                # self.hunter.moveright()
                 self.movehero("right")
             if event == "shoot":
                 self.hunter.shoot()
-                print("Shoot")
             if event == "move":
                 self.workThread.action = "move"
-                print("Move")
 
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
@@ -171,7 +169,7 @@ class Ui_Form(QtGui.QWidget):
         hunterx, huntery = self.coordConverter(self.hunter.getposition())
         self.sethero(hunterx, huntery)
         self.wumpus = Wumpus(self.hunter.getposition())
-        self.rooms = RoomGenerator(self.hunter.getposition(), self.wumpus.getposition())
+        self.roomsmap = RoomGenerator(self.hunter.getposition(), self.wumpus.getposition())
 
         self.right.clicked.connect(self.eventHandlerRight)
         self.left.clicked.connect(self.eventHandlerLeft)
@@ -217,22 +215,47 @@ class Ui_Form(QtGui.QWidget):
 
     def movehero(self, direction):
         if self.moveturn == True:
+            self.position = self.hunter.getposition()
             if direction == "up":
-                self.workThread.direction = "up"
-                self.hero.setPixmap(QtGui.QPixmap('hero_down.png'))
-                self.hero.moveBy(0, 195)
+                if self.position[1] == 1:
+                    self.workThread.direction = "up"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_down.png'))
+                    self.hero.moveBy(0, 3 * -195)
+                else:
+                    self.workThread.direction = "up"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_down.png'))
+                    self.hero.moveBy(0, 195)
+                self.hunter.moveup()
             if direction == "down":
-                self.workThread.direction = "down"
-                self.hero.setPixmap(QtGui.QPixmap('hero_up.png'))
-                self.hero.moveBy(0, -195)
+                if self.position[1] == 4:
+                    self.workThread.direction = "down"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_up.png'))
+                    self.hero.moveBy(0, 3 * 195)
+                else:
+                    self.workThread.direction = "down"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_up.png'))
+                    self.hero.moveBy(0, -195)
+                self.hunter.movedown()
             if direction == "left":
-                self.workThread.direction = "left"
-                self.hero.setPixmap(QtGui.QPixmap('hero_left.png'))
-                self.hero.moveBy(-240, 0)
+                if self.position[0] == 1:
+                    self.workThread.direction = "left"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_left.png'))
+                    self.hero.moveBy(4 * 240, 0)
+                else:
+                    self.workThread.direction = "left"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_left.png'))
+                    self.hero.moveBy(-240, 0)
+                self.hunter.moveleft()
             if direction == "right":
-                self.workThread.direction = "right"
-                self.hero.setPixmap(QtGui.QPixmap('hero_right.png'))
-                self.hero.moveBy(240, 0)
+                if self.position[0] == 5:
+                    self.workThread.direction = "right"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_right.png'))
+                    self.hero.moveBy(4 * -240, 0)
+                else:
+                    self.workThread.direction = "right"
+                    self.hero.setPixmap(QtGui.QPixmap('hero_right.png'))
+                    self.hero.moveBy(240, 0)
+                self.hunter.moveright()
 
     def sethero(self, hunterx, huntery):
         self.hero = QtGui.QGraphicsPixmapItem()
@@ -333,7 +356,7 @@ class WorkerThread(QtCore.QThread):
                 positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
                 positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
 
-            for coordinates in ui.rooms.showrooms():
+            for coordinates in ui.roomsmap.showrooms():
                 if coordinates[0] in positionCheck:
                     items.append(coordinates[1])
             if "gold" in items:
@@ -377,7 +400,7 @@ class WorkerThread(QtCore.QThread):
 
                     ui.setConsoleMessage("You moved {}!\n".format(self.action))
 
-                    for room in ui.rooms.showrooms():
+                    for room in ui.roomsmap.showrooms():
                         if ui.hunter.getposition() == room[0]:
                             if room[1] == "pit":
                                 print("You stepped on a {}".format(room[1]))
