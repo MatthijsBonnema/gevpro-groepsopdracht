@@ -182,6 +182,13 @@ class Ui_Form(QtGui.QWidget):
         self.workThread.start()
 
         self.connect(self.workThread, QtCore.SIGNAL("action"), self.actionreset, QtCore.Qt.DirectConnection)
+        self.connect(self.workThread, QtCore.SIGNAL("gold"), self.setgold, QtCore.Qt.DirectConnection)
+        self.connect(self.workThread, QtCore.SIGNAL("arrow"), self.setArrowAmount, QtCore.Qt.DirectConnection)
+
+    def setgold(self):
+        self.hunter.foundgold()
+        gold = self.hunter.getgold()
+        self.gold_amount.display(gold)
 
     def actionreset(self):
         self.workThread.action = None
@@ -189,8 +196,11 @@ class Ui_Form(QtGui.QWidget):
     def test123(self):
         self.setConsoleMessage("test")
 
-    def setArrowAmount(self, arrows):
+    def setArrowAmount(self):
+        arrows = self.hunter.getarrows()
         self.arrows_amount.display(arrows)
+
+
 
     def eventHandlerRight(self):
         self.eventHandler("right")
@@ -305,9 +315,6 @@ class Ui_Form(QtGui.QWidget):
         if coord == (5, 4):
             return 463, -319
 
-    def hunterposition(self):
-        self.workThread.hunterposition = self.hunter.getposition()
-
     def setMoveTurn(self):
         self.moveturn = True
 
@@ -320,7 +327,8 @@ class Ui_Form(QtGui.QWidget):
         self.hero.setPos(xCor, yCor)
 
     def died(self):
-        sys.exit()
+        self.workThread.quit()
+        ##show highscore en replay scherm##
 
 
 class WorkerThread(QtCore.QThread):
@@ -333,28 +341,34 @@ class WorkerThread(QtCore.QThread):
         alive = True
         self.action = None
         self.direction = None
+        self.emit(QtCore.SIGNAL("gold"))
+        self.emit(QtCore.SIGNAL("arrow"))
+
         while alive:
+            print(alive)
             items = []
 
             # check if something is near
-            ui.hunterposition()
-            xCor, yCor = self.hunterposition
+            xCor, yCor = ui.hunter.getposition()
+            print(ui.hunter.getposition())
 
-            if ui.hunter.getposition()[0] == 1:
+            if xCor == 1:
                 positionCheck = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
                 positionCheckWumpus = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
-            elif ui.hunter.getposition()[0] == 5:
+            elif xCor == 5:
                 positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (1, yCor), (xCor - 1, yCor)]
                 positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (1, yCor), (xCor - 1, yCor)]
-            elif ui.hunter.getposition()[1] == 1:
+            elif yCor == 1:
                 positionCheck = [(xCor, yCor + 1), (xCor, 4), (xCor + 1, yCor), (xCor - 1, yCor)]
                 positionCheckWumpus = [(xCor, yCor + 1), (xCor, 4), (xCor + 1, yCor), (xCor - 1, yCor)]
-            elif ui.hunter.getposition()[1] == 4:
+            elif yCor == 4:
                 positionCheck = [(xCor, 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
                 positionCheckWumpus = [(xCor, 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
             else:
                 positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
                 positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
+
+            print(positionCheck)
 
             for coordinates in ui.roomsmap.showrooms():
                 if coordinates[0] in positionCheck:
@@ -382,8 +396,8 @@ class WorkerThread(QtCore.QThread):
             if ui.wumpus.getposition() in positionCheckWumpus:
                 print("I smell a Wumpus\n")
 
-
-            while notTurn:
+            # while notTurn:
+            if True:
                 ui.setConsoleMessage("Do you want to move or shoot?")
                 self.emit(QtCore.SIGNAL("action"))
                 self.action = None
@@ -409,18 +423,20 @@ class WorkerThread(QtCore.QThread):
                                 ### Highscore functie hier aanroepen ###
                             elif room[1] == "gold":
                                 print("You stepped on a {}".format(room[1]))
-                                ui.hunter.foundgold()
+                                self.emit(QtCore.SIGNAL("gold"))
                             elif room[1] == "bat":
                                 print("You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
                                 ui.hunter.setwumpuspos(ui.wumpus.getposition())
                                 ui.respawn()
                 elif self.action.lower() == "shoot":
                     print("pew pew pew\n")
+                    self.emit(QtCore.SIGNAL("arrow"))
 
                 self.action = None
 
         print("You found {} gold".format(ui.hunter.getgold()))
         print("You had {} arrows left".format(ui.hunter.getarrows()))
+
         ui.died()
 
     def actionMove(self):
