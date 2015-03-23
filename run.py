@@ -10,7 +10,7 @@ from hero import Hero
 from wumpus import Wumpus
 
 
-def main():
+def main(username):
     print("--------------------------------------------------------------------------------\n"
           "|                       Welcome to Hunt the Wumpus! v0.1                       |\n"
           "|                                                                              |\n"
@@ -18,7 +18,7 @@ def main():
           "--------------------------------------------------------------------------------\n")
 
 
-    name = input("Before we start the Journey, what is your name?\n")
+    name = username
 
     hunter = Hero(name)
     spawnHunter = hunter.getposition()
@@ -135,4 +135,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(username)
