@@ -6,7 +6,7 @@
 
 from PyQt4 import QtCore, QtGui
 import sys
-import run
+import hunt_the_wumpus
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -116,7 +116,7 @@ class Ui_Form(QtGui.QWidget):
         
     
     def activategame(self):
-        run.main(self.username)
+        print("activeer hunt_the_wumpus met paramter username")
       
 def main():
     app=QtGui.QApplication(sys.argv)
