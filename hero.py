@@ -115,7 +115,7 @@ class Hero:
 				self.victory = True
 			self.arPath = []
 			self.arDir = []
-		return self.arrows, self.victory
+			return self.arrows, self.victory
 			
 			
 		
