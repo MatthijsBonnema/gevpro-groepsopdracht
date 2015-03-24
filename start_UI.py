@@ -99,14 +99,17 @@ class Ui_Form(QtGui.QWidget):
         self.verticalLayout.addWidget(self.down_widget)
 
         self.middle_widget.hide()
+
         self.retranslateUi(Form)
+
         QtCore.QMetaObject.connectSlotsByName(Form)
         self.username = self.name_input.text()
-        self.closeWidget = self.play_btn.clicked.connect(self.activategame) ######
-        if self.closeWidget == 0: ##########
-            print ("hallo")
-            Form.close()         #########
-        print(self.closeWidget) ###########
+        self.play_btn.clicked.connect(self.activategame)
+        # self.closeWidget = self.play_btn.clicked.connect(self.activategame) ######
+        # if self.closeWidget == 0: ##########
+        #     print("hallo")
+        #     self.close()         #########
+        # print(self.closeWidget) ###########
         self.highscores_btn.clicked.connect(self.highscores)
 
     def retranslateUi(self, Form):
@@ -120,14 +123,17 @@ class Ui_Form(QtGui.QWidget):
     def highscores(self):
         print("activeer highscoreUI.py")
 
-
-
     def activategame(self):
+        self.close()
+        hunt_the_wumpus.run()
+        print("test")
         return 0
 
+
 def main():
-    app=QtGui.QApplication(sys.argv)
-    interface=Ui_Form()
+    app = QtGui.QApplication(sys.argv)
+    app.setStyle('cleanlooks')
+    interface = Ui_Form()
     interface.show()
     app.exec_()
 
