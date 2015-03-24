@@ -31,6 +31,7 @@ except AttributeError:
 class Ui_Form(QtGui.QWidget):
     def __init__(self):
         QtGui.QWidget.__init__(self)
+        self.moveturn = False
         self.setupUi(self)
 
     def keyPressEvent(self, event):
@@ -169,7 +170,8 @@ class Ui_Form(QtGui.QWidget):
 
         self.graphicsView.setScene(self.scene)
 
-        name, ok = QtGui.QInputDialog.getText(self, 'Hunt the Wumpus', 'Before we start Hunter, what is your name?\n')
+        # name, ok = QtGui.QInputDialog.getText(self, 'Hunt the Wumpus', 'Before we start Hunter, what is your name?\n')
+        name = "test"
         if name == "":
             name = "Anonymous"
 
@@ -351,13 +353,14 @@ class WorkerThread(QtCore.QThread):
 
     def run(self):
         sleep(1)
+        # resetMoveTurn()
+        # sleep(5)
         ui.resetMoveTurn()
         alive = True
         self.action = None
         self.direction = None
         self.emit(QtCore.SIGNAL("gold"))
         self.emit(QtCore.SIGNAL("arrow"))
-
 
         while alive:
             items = []
@@ -460,11 +463,14 @@ class WorkerThread(QtCore.QThread):
         self.action = "shoot"
 
 def run():
-    app = QtGui.QApplication(sys.argv)
-    app.setStyle('cleanlooks')
+    # app = QtGui.QApplication(sys.argv)
+    # app.setStyle('cleanlooks')
     ui = Ui_Form()
     ui.show()
-    sys.exit(app.exec_())
+    # sys.exit(app.exec_())
+
+# def resetmoveturn():
+
 
 
 if __name__ == "__main__":

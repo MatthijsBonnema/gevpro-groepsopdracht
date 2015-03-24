@@ -114,9 +114,16 @@ class Ui_Form(QtGui.QWidget):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Hunt the Wumpus", None))
-        self.title_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:36pt; font-weight:400; font-style:normal;\">Hunt The Wumpus</span></p><p><span style=\" font-size:36pt; font-weight:400; font-style:normal;\"><br/></span></p></body></html>", None))
-        self.by_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:8pt;\">By: Matthijs Bonnema, Tomer Gabay, Jeroen Wilkens</span></p></body></html>", None))
-        self.name_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600;\">Name:</span></p></body></html>", None))
+        self.title_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:36pt;"
+                                                  " font-weight:400; font-style:normal;\">Hunt The Wumpus</span></p>"
+                                                  "<p><span style=\" font-size:36pt; font-weight:400;"
+                                                  " font-style:normal;\"><br/></span></p></body></html>",
+                                          None))
+        self.by_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:8pt;\">"
+                                               "By: Matthijs Bonnema, Tomer Gabay, Jeroen Wilkens</span></p>"
+                                               "</body></html>", None))
+        self.name_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:14pt;"
+                                                 " font-weight:600;\">Name:</span></p></body></html>", None))
         self.play_btn.setText(_translate("Form", "Play!", None))
         self.highscores_btn.setText(_translate("Form", "Highscores", None))
 
