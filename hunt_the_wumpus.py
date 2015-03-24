@@ -32,6 +32,7 @@ class Ui_Form(QtGui.QWidget):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         self.moveturn = False
+        self.distance = 0
         self.setupUi(self)
 
     def keyPressEvent(self, event):
@@ -59,21 +60,47 @@ class Ui_Form(QtGui.QWidget):
 
     def eventHandler(self, event):
         if event == "up":
-            # self.hunter.moveup()
-            self.movehero("up")
+            if self.moveturn:
+                self.movehero("up")
+            if self.shootturn:
+                self.hunter.shootup()
+                self.distanceCounter()
         if event == "down":
-            # self.hunter.movedown()
-            self.movehero("down")
+            if self.moveturn:
+                self.movehero("down")
+            if self.shootturn:
+                self.hunter.shootdown()
+                self.distanceCounter()
         if event == "left":
-            # self.hunter.moveleft()
-            self.movehero("left")
+            if self.moveturn:
+                self.movehero("left")
+            if self.shootturn:
+                self.hunter.shootleft()
+                self.distanceCounter()
         if event == "right":
-            # self.hunter.moveright()
-            self.movehero("right")
+            if self.moveturn:
+                self.movehero("right")
+            if self.shootturn:
+                self.distanceCounter()
+                self.hunter.shootright()
+                self.distanceCounter()
         if event == "shoot":
             self.hunter.shoot(self.wumpus.getposition) #########
+            self.workThread.action = "shoot"
         if event == "move":
             self.workThread.action = "move"
+
+    def eventHandlerRight(self):
+        self.eventHandler("right")
+
+    def eventHandlerLeft(self):
+        self.eventHandler("left")
+
+    def eventHandlerUp(self):
+        self.eventHandler("up")
+
+    def eventHandlerDown(self):
+        self.eventHandler("down")
 
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
@@ -215,35 +242,13 @@ class Ui_Form(QtGui.QWidget):
         arrows = self.hunter.getarrows()
         self.arrows_amount.display(arrows)
 
-    def eventHandlerRight(self):
-        if self.moveturn:
-            self.eventHandler("right")
-        if self.shootturn:
-            self.hunter.shootright()
-            self.distanceCounter()
-    def eventHandlerLeft(self):
-        if self.moveturn:
-            self.eventHandler("left")
-        if self.shootturn:
-            self.hunter.shootleft()
-            self.distanceCounter()
-    def eventHandlerUp(self):
-        if self.moveturn:
-            self.eventHandler("up")
-        if self.shootturn:
-            self.hunter.shootup()
-            self.distanceCounter()
-    def eventHandlerDown(self):
-        if self.moveturn:
-            self.eventHandler("down")
-        if self.shootturn:
-            self.hunter.shootdown
-            self.distanceCounter()
-
     def distanceCounter(self):
         if self.distance == 5:
             self.distance = 0
         self.distance += 1
+
+    def getDistance(self):
+        return self.distance
 
 
     def eventHandlerMove(self):
@@ -474,13 +479,17 @@ class WorkerThread(QtCore.QThread):
 
             elif self.action.lower() == "shoot":
                 ui.setShootTurn()
-                while ui.distance != 5:
+                ui.setConsoleMessage("\nPlease select what way you want to shoot. up, down, left or right?\n")
+                self.distance = 0
+                while self.distance != 5:
+                    self.distance = ui.getDistance()
+                    print(self.distance)
                     sleep(0.1)
-                if ui.victory:
+                if ui.hunter.getVictory():
                     print("Win")
-
-
+                print("stillshooting")
                 self.emit(QtCore.SIGNAL("arrow"))
+            print("endshooting")
 
             self.action = None
 
