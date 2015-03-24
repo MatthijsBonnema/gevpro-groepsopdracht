@@ -342,7 +342,7 @@ class Ui_Form(QtGui.QWidget):
 		print("You had {} arrows left".format(self.hunter.getarrows()))
 		self.workThread.quit()
 		##show highscore en replay scherm##
-		highscore.highscore("Hunter_test", self.hunter.getgold(), self.hunter.getarrows(),
+		highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
 							len(self.hunter.getpath()), won)
 
 class WorkerThread(QtCore.QThread):
