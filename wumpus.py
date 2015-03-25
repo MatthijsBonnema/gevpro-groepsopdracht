@@ -27,10 +27,11 @@ class Wumpus:
 		self.position = (self.xCor, self.yCor)
 	
 	def hunt(self, heroposition):
-		self.heroXCor, self.heroYCor = heroposition
 		"""Makes Wumpus move towards hero in fastest way possible"""
-		#calculates fastest route X-wise
-		absXDistance = self.xCor - self.heroXCor  # abs for not going out of the map
+		self.heroXCor, self.heroYCor = heroposition
+		
+		#calculates fastest route X-wise:
+		absXDistance = self.xCor - self.heroXCor  # abs = not going out of the map
 		
 		if absXDistance > 0:
 			relXDistance = abs(5 - self.xCor + self.heroXCor)  # relXDistance calculates route going 'out' of the map e.g. from (1,4) to (4,4)
@@ -56,6 +57,8 @@ class Wumpus:
 		else:
 			relYDistance = 0
 		absYDistance = abs(absYDistance)
+		
+		#calculates fastest route Y-wise:
 		if absYDistance <= relYDistance:
 			shortestYDistance = absYDistance
 		else:

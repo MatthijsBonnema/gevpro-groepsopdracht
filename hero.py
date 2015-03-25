@@ -61,7 +61,7 @@ class Hero:
 
     def shootup(self):
         self.arYcor -= 1
-        if self.arDir[-1] == "down":
+        if self.arDir[-1] == "down": # to undo latest arrow-direction
             del self.arDir[-1]
             del self.arPath[-1]
         else:
@@ -73,7 +73,7 @@ class Hero:
 
     def shootleft(self):
         self.arXcor -= 1
-        if self.arDir[-1] == "right":
+        if self.arDir[-1] == "right": # to undo latest arrow-direction
             del self.arDir[-1]
             del self.arPath[-1]
         else:
@@ -85,7 +85,7 @@ class Hero:
 
     def shootright(self):
         self.arXcor += 1
-        if self.arDir[-1] == "left":
+        if self.arDir[-1] == "left": # to undo latest arrow-direction
             del self.arDir[-1]
             del self.arPath[-1]
         else:
@@ -97,7 +97,7 @@ class Hero:
 
     def shootdown(self):
         self.arYcor += 1
-        if self.arDir[-1] == "up":
+        if self.arDir[-1] == "up": # to undo latest arrow-direction
             del self.arDir[-1]
             del self.arPath[-1]
         else:
@@ -108,17 +108,12 @@ class Hero:
             self.postshootupdate()
 
     def postshootupdate(self):
-        """resets path and direction and substracts an arrow if shot is over"""
-        # self.victory = False
+        """substracts an arrow if shot is over and calculates if wumpus was shot"""
         if len(self.arPath) == 6:
             self.arrows -= 1
-            print(self.poswumpus, self.arPath)
             if self.poswumpus in self.arPath:
                 self.victory = True
-            # self.arPath = []
-            # self.arDir = []
-            print("Status:", self.victory)
-            return self.arrows, self.victory
+            self.victory
 
     def resetarpath(self):
         self.arPath = [""]

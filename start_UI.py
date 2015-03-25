@@ -7,6 +7,7 @@
 from PyQt4 import QtCore, QtGui
 import sys
 import hunt_the_wumpus
+import highscore
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -99,7 +100,7 @@ class Ui_Form(QtGui.QWidget):
         self.highscores_btn.setText(_translate("Form", "Highscores", None))
 
     def highscores(self):
-        print("activeer highscoreUI.py")
+        highscore.main()
 
     def activategame(self):
         self.close()
