@@ -164,7 +164,6 @@ class Ui_Form(QtGui.QWidget):
         self.gridLayout_4.addWidget(self.console, 0, 0, 3, 4)
         self.gridLayout.addLayout(self.gridLayout_4, 2, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 1, 0, 1, 1)
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -196,6 +195,7 @@ class Ui_Form(QtGui.QWidget):
         self.graphicsView.setRenderHint(QtGui.QPainter.Antialiasing)
 
         self.graphicsView.setScene(self.scene)
+
 
         name, ok = QtGui.QInputDialog.getText(self, 'Hunt the Wumpus', 'Before we start Hunter, what is your name?\n')
 #        name = "test"
@@ -602,8 +602,10 @@ class WorkerThread(QtCore.QThread):
 def run():
     # app = QtGui.QApplication(sys.argv)
     # app.setStyle('cleanlooks')
-    ui = Ui_Form()
-    ui.show()
+    # ui = Ui_Form()
+    # print("test")
+    # ui.show()
+    sleep(1)
 # sys.exit(app.exec_())
 
 # def resetmoveturn():
