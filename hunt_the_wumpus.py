@@ -50,6 +50,8 @@ class Ui_Form(QtGui.QWidget):
                 self.eventHandler("shoot")
             if event.key() == QtCore.Qt.Key_M:
                 self.eventHandler("move")
+            if event.key() == QtCore.Qt.Key_Escape:
+                self.eventHandler("continue")
 
 
             if event.key() == QtCore.Qt.Key_H:
@@ -60,35 +62,40 @@ class Ui_Form(QtGui.QWidget):
             event.ignore()
 
     def eventHandler(self, event):
-        if event == "up":
-            if self.moveturn:
-                self.movehero("up")
-            if self.shootturn:
-                self.movearrow("up")
-                self.distanceCounter()
-        if event == "down":
-            if self.moveturn:
-                self.movehero("down")
-            if self.shootturn:
-                self.movearrow("down")
-                self.distanceCounter()
-        if event == "left":
-            if self.moveturn:
-                self.movehero("left")
-            if self.shootturn:
-                self.movearrow("left")
-                self.distanceCounter()
-        if event == "right":
-            if self.moveturn:
-                self.movehero("right")
-            if self.shootturn:
-                self.movearrow("right")
-                self.distanceCounter()
-        if event == "shoot":
-            self.hunter.shoot(self.wumpus.position) #########
-            self.workThread.action = "shoot"
-        if event == "move":
-            self.workThread.action = "move"
+        if self.workThread.alive:
+            if event == "up":
+                if self.moveturn:
+                    self.movehero("up")
+                if self.shootturn:
+                    self.movearrow("up")
+                    self.distanceCounter()
+            if event == "down":
+                if self.moveturn:
+                    self.movehero("down")
+                if self.shootturn:
+                    self.movearrow("down")
+                    self.distanceCounter()
+            if event == "left":
+                if self.moveturn:
+                    self.movehero("left")
+                if self.shootturn:
+                    self.movearrow("left")
+                    self.distanceCounter()
+            if event == "right":
+                if self.moveturn:
+                    self.movehero("right")
+                if self.shootturn:
+                    self.movearrow("right")
+                    self.distanceCounter()
+            if event == "shoot":
+                self.hunter.shoot(self.wumpus.position) #########
+                self.workThread.action = "shoot"
+            if event == "move":
+                self.workThread.action = "move"
+        else:
+            if event == "continue":
+                python = sys.executable
+                os.execl(python, python, * sys.argv)
 
     def eventHandlerRight(self):
         self.eventHandler("right")
@@ -218,8 +225,6 @@ class Ui_Form(QtGui.QWidget):
         self.setConsoleMessage("info", "Welcome to Hunt the Wumpus v1.0")
 
         self.hunter = Hero(name)
-
-        print(self.hunter)
 
         hunterx, huntery = self.coordConverter(self.hunter.getposition())
         self.sethero(hunterx, huntery)
@@ -477,26 +482,33 @@ class Ui_Form(QtGui.QWidget):
         self.hero.setPos(xCor, yCor)
 
     def died(self, won):
-        ui.setConsoleMessage("info", "You died!")
+        if self.workThread.deadreason == "pit":
+            ui.setConsoleMessage("info", "You stepped on a pit an died!")
+        if self.workThread.deadreason == "wumpus":
+            ui.setConsoleMessage("info", "You have been eaten by Wumpy!")
         ui.setConsoleMessage("gold", "You found {} gold".format(self.hunter.getgold()))
         ui.setConsoleMessage("pit", "You had {} arrows left".format(self.hunter.getarrows()))
-        self.workThread.quit()
+        ui.setConsoleMessage("bat", "Score: {}".format(highscore.highscore(self.hunter.getname(),
+                                                                           self.hunter.getgold(),
+                                                                           self.hunter.getarrows(),
+                                                                           len(self.hunter.getpath()),
+                                                                           won)))
+        ui.setConsoleMessage("empty", "Press Escape to restart the game.")
         ##show highscore en replay scherm##
-        highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
-                            len(self.hunter.getpath()), won)
-        python = sys.executable
-        os.execl(python, python, * sys.argv)
 
     def win(self):
-        ui.setConsoleMessage("info", "Well done! You defeated Wumpus!\n")
+        ui.setConsoleMessage("info", "Well done! You defeated Wumpus!")
         ui.setConsoleMessage("gold", "You found {} gold".format(self.hunter.getgold()))
         ui.setConsoleMessage("pit", "You had {} arrows left".format(self.hunter.getarrows()))
-        self.workThread.quit()
+        ui.setConsoleMessage("bat", "Score: {}".format(highscore.highscore(self.hunter.getname(),
+                                                                   self.hunter.getgold(),
+                                                                   self.hunter.getarrows(),
+                                                                   len(self.hunter.getpath()),
+                                                                   won)))
         ##show highscore en replay scherm##
         highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
                             len(self.hunter.getpath()), True)
-        python = sys.executable
-        os.execl(python, python, * sys.argv)
+        ui.setConsoleMessage("empty", "Press Escape to restart the game.")
 
     def closeEvent(self, QCloseEvent):
         self.workThread.quit()
@@ -513,14 +525,19 @@ class WorkerThread(QtCore.QThread):
         # resetMoveTurn()
         # sleep(5)
         ui.resetMoveTurn()
-        alive = True
+        self.alive = True
         self.action = None
         self.direction = None
         self.lastdirection = "up"
         self.emit(QtCore.SIGNAL("gold"))
         self.emit(QtCore.SIGNAL("arrow"))
 
-        while alive:
+        while self.alive:
+            ui.resetConsoleMessage("gold")
+            ui.resetConsoleMessage("pit")
+            ui.resetConsoleMessage("empty")
+            ui.resetConsoleMessage("bat")
+
             items = []
 
             # check if something is near
@@ -560,69 +577,69 @@ class WorkerThread(QtCore.QThread):
                         if str(rooms) == str(ui.wumpus.getposition()):
                             ui.setConsoleMessage("empty", "I smell a Wumpus!")
 
-            if alive:
+            if self.alive:
                 if ui.hunter.getposition() == ui.wumpus.getposition():
-                    ui.setConsoleMessage("info", "You have been eaten by Wumpy")
-                    alive = False
+                    self.alive = False
+                    self.deadreason = "wumpus"
                     ui.died(False)
-                if alive:
+                if self.alive:
                     ui.wumpus.hunt(ui.hunter.getposition())
-
                     if ui.hunter.getposition() == ui.wumpus.getposition():
-                        ui.setConsoleMessage("info", "You have been eaten by Wumpy")
-                        alive = False
+                        self.alive = False
+                        self.deadreason = "wumpus"
                         ui.died(False)
+            if self.alive:
+                ui.setConsoleMessage("info", "Do you want to move or shoot?")
 
-            ui.setConsoleMessage("info", "Do you want to move or shoot?")
-            self.emit(QtCore.SIGNAL("action"))
-            self.action = None
-            while self.action == None:
-                sleep(0.5)
+                self.emit(QtCore.SIGNAL("action"))
+                self.action = None
+                while self.action == None:
+                    sleep(0.5)
 
-            if self.action.lower() == "move":
-                ui.setMoveTurn()
-                ui.setConsoleMessage("info", "Please select your move Hunter. up, down, left or right?")
-                self.direction = None
-                while self.direction == None:
-                    sleep(0.1)
-                ui.setLastDirection()
-                ui.resetMoveTurn()
-                self.lastdirection = self.direction
+                if self.action.lower() == "move":
+                    ui.setMoveTurn()
+                    ui.setConsoleMessage("info", "Please select your move Hunter. up, down, left or right?")
+                    self.direction = None
+                    while self.direction == None:
+                        sleep(0.1)
+                    ui.setLastDirection()
+                    ui.resetMoveTurn()
+                    self.lastdirection = self.direction
 
-                ui.setConsoleMessage("info", "You moved {}!\n".format(self.action))
+                    ui.setConsoleMessage("info", "You moved {}!".format(self.action))
 
-                for room in ui.roomsmap.showrooms():
-                    if ui.hunter.getposition() == room[0]:
-                        if room[1] == "pit":
-                            ui.setConsoleMessage("pit", "You stepped on a {}".format(room[1]))
-                            alive = False
-                        elif room[1] == "gold":
-                            ui.setConsoleMessage("gold", "You stepped on a {}".format(room[1]))
-                            self.emit(QtCore.SIGNAL("gold"))
-                        elif room[1] == "bat":
-                            ui.setConsoleMessage("info", "You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
-                            ui.hunter.setwumpuspos(ui.wumpus.getposition())
-                            ui.respawn()
-                            sleep(1)
+                    for room in ui.roomsmap.showrooms():
+                        if ui.hunter.getposition() == room[0]:
+                            if room[1] == "pit":
+                                ui.setConsoleMessage("pit", "You stepped on a {}".format(room[1]))
+                                self.alive = False
+                                self.deadreason = "pit"
+                            elif room[1] == "gold":
+                                ui.setConsoleMessage("gold", "You stepped on a {}".format(room[1]))
+                                self.emit(QtCore.SIGNAL("gold"))
+                            elif room[1] == "bat":
+                                ui.setConsoleMessage("info", "You stepped on a {}. The bat took you, and dropped you in a random room!".format(room[1]))
+                                ui.hunter.setwumpuspos(ui.wumpus.getposition())
+                                ui.respawn()
+                                sleep(2)
 
-            elif self.action.lower() == "shoot":
-                ui.setShootTurn()
-                ui.setConsoleMessage("info", "Please select what way you want to shoot. up, down, left or right?")
-                self.distance = 0
-                while len(ui.hunter.arPath) != 6:
-                    self.distance = ui.getDistance()
-                    print(ui.hunter.arPath)
-                    print(self.distance)
-                    sleep(0.1)
-                ui.hunter.resetarpath()
-                print("done shooting")
-                ui.resetShootTurn()
-                ui.hunter.shoot(ui.wumpus.position)
-                if ui.hunter.getVictory():
-                    alive = False
-                if ui.hunter.getarrows == 0:
-                    ui.died(False)
-                self.emit(QtCore.SIGNAL("arrow"))
+                elif self.action.lower() == "shoot":
+                    ui.setShootTurn()
+                    ui.setConsoleMessage("info", "Please select what way you want to shoot. up, down, left or right?")
+                    self.distance = 0
+                    while len(ui.hunter.arPath) != 6:
+                        self.distance = ui.getDistance()
+                        print(ui.hunter.arPath)
+                        print(self.distance)
+                        sleep(0.1)
+                    ui.hunter.resetarpath()
+                    ui.resetShootTurn()
+                    ui.hunter.shoot(ui.wumpus.position)
+                    if ui.hunter.getVictory():
+                        self.alive = False
+                    if ui.hunter.getarrows == 0:
+                        ui.died(False)
+                    self.emit(QtCore.SIGNAL("arrow"))
 
             self.action = None
 
@@ -651,11 +668,11 @@ def run():
 
 if __name__ == "__main__":
 
-    # class DevNull:
-    #     def write(self, msg):
-    #         pass
-    #
-    # sys.stderr = DevNull()
+    class DevNull:
+        def write(self, msg):
+            pass
+
+    sys.stderr = DevNull()
 
     start_UI.main()
     app = QtGui.QApplication(sys.argv)

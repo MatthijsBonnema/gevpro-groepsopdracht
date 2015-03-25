@@ -74,8 +74,6 @@ def highscore(name, gold_amount, arrowsleft, number_of_steps, won):
     else:
         score = 0 - (number_of_steps * 100) + (arrowsleft * 250) + (gold_amount * 1000)
 
-    print("Score: ", score)
-
     # This prevents scores below 1000 becoming placed higher.
     if score < 1000:
         score = "0"+str(score)
@@ -107,6 +105,7 @@ def highscore(name, gold_amount, arrowsleft, number_of_steps, won):
         file.write((item[0])+" "+(item[1])+"\n")
 
     file.close()
+    return score
 
 if __name__ == "__main__":
     main()
