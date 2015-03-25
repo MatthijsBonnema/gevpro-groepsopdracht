@@ -53,11 +53,6 @@ class Ui_Form(QtGui.QWidget):
             if event.key() == QtCore.Qt.Key_Escape:
                 self.eventHandler("continue")
 
-
-            if event.key() == QtCore.Qt.Key_H:
-                self.wumpus.hunt(ui.hunter.getposition())
-                print("Wumpus", self.wumpus.getposition())
-
         else:
             event.ignore()
 
@@ -407,7 +402,6 @@ class Ui_Form(QtGui.QWidget):
     def resetarrow(self):
         xCor, yCor = self.hunter.getposition()
         xCord, yCord = self.coordConverter((xCor, yCor))
-        print(xCord, yCord)
         self.arrow.setPos(xCord, yCord)
         self.scene.addItem(self.arrow)
 
@@ -542,7 +536,6 @@ class WorkerThread(QtCore.QThread):
 
             # check if something is near
             xCor, yCor = ui.hunter.getposition()
-            print(ui.hunter.getposition())
 
             if xCor == 1:
                 positionCheck = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
@@ -629,8 +622,6 @@ class WorkerThread(QtCore.QThread):
                     self.distance = 0
                     while len(ui.hunter.arPath) != 6:
                         self.distance = ui.getDistance()
-                        print(ui.hunter.arPath)
-                        print(self.distance)
                         sleep(0.1)
                     ui.hunter.resetarpath()
                     ui.resetShootTurn()
