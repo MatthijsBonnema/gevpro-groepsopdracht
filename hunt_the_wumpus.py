@@ -445,7 +445,7 @@ class Ui_Form(QtGui.QWidget):
         print("You had {} arrows left".format(self.hunter.getarrows()))
         self.workThread.quit()
         ##show highscore en replay scherm##
-        highscore.highscore("Hunter_test", self.hunter.getgold(), self.hunter.getarrows(),
+        highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
                             len(self.hunter.getpath()), won)
         python = sys.executable
         os.execl(python, python, * sys.argv)
@@ -456,7 +456,7 @@ class Ui_Form(QtGui.QWidget):
         print("You had {} arrows left".format(self.hunter.getarrows()))
         self.workThread.quit()
         ##show highscore en replay scherm##
-        highscore.highscore("Hunter_test", self.hunter.getgold(), self.hunter.getarrows(),
+        highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
                             len(self.hunter.getpath()), True)
         python = sys.executable
         os.execl(python, python, * sys.argv)
@@ -614,9 +614,14 @@ def run():
 
 # def resetmoveturn():
 
-
-
 if __name__ == "__main__":
+
+    class DevNull:
+        def write(self, msg):
+            pass
+
+    sys.stderr = DevNull()
+
     start_UI.main()
     app = QtGui.QApplication(sys.argv)
     app.setStyle('cleanlooks')
