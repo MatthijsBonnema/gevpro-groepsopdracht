@@ -197,8 +197,8 @@ class Ui_Form(QtGui.QWidget):
 
         self.graphicsView.setScene(self.scene)
 
-        # name, ok = QtGui.QInputDialog.getText(self, 'Hunt the Wumpus', 'Before we start Hunter, what is your name?\n')
-        name = "test"
+        name, ok = QtGui.QInputDialog.getText(self, 'Hunt the Wumpus', 'Before we start Hunter, what is your name?\n')
+#        name = "test"
         if name == "":
             name = "Anonymous"
 
