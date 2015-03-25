@@ -565,7 +565,7 @@ class WorkerThread(QtCore.QThread):
                 ui.setShootTurn()
                 ui.setConsoleMessage("\nPlease select what way you want to shoot. up, down, left or right?\n")
                 self.distance = 0
-                while len(ui.hunter.arPath) != 6:
+                while len(ui.hunter.arPath) != 5:
                     self.distance = ui.getDistance()
                     print(ui.hunter.arPath)
                     print(self.distance)
