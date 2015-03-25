@@ -9,6 +9,7 @@
 1800 Hunter_test
 1800 Hunter_test
 1800 Hunter_test
+1800 Anonymous
 1700 Hunter_test
 1700 Hunter_test
 1650 Hunter_test
@@ -16,6 +17,7 @@
 1600 Hunter_test
 1600 Hunter_test
 1600 Hunter_test
+1600 Anonymous
 1550 Hunter_test
 1550 Hunter_test
 1550 Hunter_test

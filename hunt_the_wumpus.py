@@ -115,55 +115,68 @@ class Ui_Form(QtGui.QWidget):
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.graphicsView = QtGui.QGraphicsView(Form)
+        self.graphicsView.setFont(font)
         self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
         self.gridLayout.addWidget(self.graphicsView, 1, 0, 1, 1)
         self.gridLayout_4 = QtGui.QGridLayout()
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
-        self.move = QtGui.QPushButton(Form)
-        self.move.setFont(font)
-        self.move.setObjectName(_fromUtf8("move"))
-        self.gridLayout_4.addWidget(self.move, 1, 4, 1, 1)
-        self.right = QtGui.QPushButton(Form)
-        self.right.setFont(font)
-        self.right.setObjectName(_fromUtf8("right"))
-        self.gridLayout_4.addWidget(self.right, 2, 7, 1, 1)
-        self.arrows_amount = QtGui.QLCDNumber(Form)
-        self.arrows_amount.setObjectName(_fromUtf8("arrows_amount"))
-        self.gridLayout_4.addWidget(self.arrows_amount, 0, 7, 1, 1)
-        self.up = QtGui.QPushButton(Form)
-        self.up.setFont(font)
-        self.up.setObjectName(_fromUtf8("up"))
-        self.gridLayout_4.addWidget(self.up, 1, 6, 1, 1)
-        self.arrows = QtGui.QLabel(Form)
-        self.arrows.setFont(font)
-        self.arrows.setObjectName(_fromUtf8("arrows"))
-        self.gridLayout_4.addWidget(self.arrows, 0, 6, 1, 1)
-        self.shoot = QtGui.QPushButton(Form)
-        self.shoot.setFont(font)
-        self.shoot.setObjectName(_fromUtf8("shoot"))
-        self.gridLayout_4.addWidget(self.shoot, 2, 4, 1, 1)
         self.down = QtGui.QPushButton(Form)
         self.down.setFont(font)
         self.down.setObjectName(_fromUtf8("down"))
-        self.gridLayout_4.addWidget(self.down, 2, 6, 1, 1)
+        self.gridLayout_4.addWidget(self.down, 2, 10, 1, 1)
+        self.up = QtGui.QPushButton(Form)
+        self.up.setFont(font)
+        self.up.setObjectName(_fromUtf8("up"))
+        self.gridLayout_4.addWidget(self.up, 1, 10, 1, 1)
+        self.move = QtGui.QPushButton(Form)
+        self.move.setFont(font)
+        self.move.setObjectName(_fromUtf8("move"))
+        self.gridLayout_4.addWidget(self.move, 1, 8, 1, 1)
+        self.right = QtGui.QPushButton(Form)
+        self.right.setFont(font)
+        self.right.setObjectName(_fromUtf8("right"))
+        self.gridLayout_4.addWidget(self.right, 2, 11, 1, 1)
+        self.arrows_amount = QtGui.QLCDNumber(Form)
+        self.arrows_amount.setObjectName(_fromUtf8("arrows_amount"))
+        self.gridLayout_4.addWidget(self.arrows_amount, 0, 11, 1, 1)
+        self.arrows = QtGui.QLabel(Form)
+        self.arrows.setFont(font)
+        self.arrows.setObjectName(_fromUtf8("arrows"))
+        self.gridLayout_4.addWidget(self.arrows, 0, 10, 1, 1)
+        self.shoot = QtGui.QPushButton(Form)
+        self.shoot.setFont(font)
+        self.shoot.setObjectName(_fromUtf8("shoot"))
+        self.gridLayout_4.addWidget(self.shoot, 2, 8, 1, 1)
         self.Gold = QtGui.QLabel(Form)
         self.Gold.setFont(font)
         self.Gold.setObjectName(_fromUtf8("Gold"))
-        self.gridLayout_4.addWidget(self.Gold, 0, 4, 1, 1)
+        self.gridLayout_4.addWidget(self.Gold, 0, 8, 1, 1)
         self.left = QtGui.QPushButton(Form)
         self.left.setFont(font)
         self.left.setObjectName(_fromUtf8("left"))
-        self.gridLayout_4.addWidget(self.left, 2, 5, 1, 1)
+        self.gridLayout_4.addWidget(self.left, 2, 9, 1, 1)
         self.gold_amount = QtGui.QLCDNumber(Form)
         self.gold_amount.setObjectName(_fromUtf8("gold_amount"))
-        self.gridLayout_4.addWidget(self.gold_amount, 0, 5, 1, 1)
-        self.console = QtGui.QLabel(Form)
-        self.console.setText(_fromUtf8(""))
-        self.console.setObjectName(_fromUtf8("console"))
-        self.console.setFont(font)
-        self.gridLayout_4.addWidget(self.console, 0, 0, 3, 4)
+        self.gridLayout_4.addWidget(self.gold_amount, 0, 9, 1, 1)
+        self.InfoLabel = QtGui.QLabel(Form)
+        self.InfoLabel.setObjectName(_fromUtf8("InfoLabel"))
+        self.gridLayout_4.addWidget(self.InfoLabel, 0, 4, 1, 4)
+        self.GoldLabel = QtGui.QLabel(Form)
+        self.GoldLabel.setObjectName(_fromUtf8("GoldLabel"))
+        self.gridLayout_4.addWidget(self.GoldLabel, 1, 4, 1, 2)
+        self.PitLabel = QtGui.QLabel(Form)
+        self.PitLabel.setObjectName(_fromUtf8("PitLabel"))
+        self.gridLayout_4.addWidget(self.PitLabel, 2, 4, 1, 2)
+        self.BatLabel = QtGui.QLabel(Form)
+        self.BatLabel.setObjectName(_fromUtf8("BatLabel"))
+        self.gridLayout_4.addWidget(self.BatLabel, 1, 6, 1, 2)
+        self.EmptyLabel = QtGui.QLabel(Form)
+        self.EmptyLabel.setObjectName(_fromUtf8("EmptyLabel"))
+        self.gridLayout_4.addWidget(self.EmptyLabel, 2, 6, 1, 2)
         self.gridLayout.addLayout(self.gridLayout_4, 2, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 1, 0, 1, 1)
+        self.InfoLabel.setFont(font)
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -202,7 +215,7 @@ class Ui_Form(QtGui.QWidget):
         if name == "":
             name = "Anonymous"
 
-        self.setConsoleMessage("Welcome to Hunt the Wumpus v1.0")
+        self.setConsoleMessage("info", "Welcome to Hunt the Wumpus v1.0")
 
         self.hunter = Hero(name)
 
@@ -261,8 +274,31 @@ class Ui_Form(QtGui.QWidget):
     def eventHandlerShoot(self):
         self.eventHandler("shoot")
 
-    def setConsoleMessage(self, message):
-        self.console.setText(_translate("Form", message, None))
+    def setConsoleMessage(self, label, message):
+        if label == "info":
+            self.InfoLabel.setText(_translate("Form", message, None))
+        if label == "gold":
+            self.GoldLabel.setText(_translate("Form", message, None))
+        if label == "pit":
+            self.PitLabel.setText(_translate("Form", message, None))
+        if label == "empty":
+            self.EmptyLabel.setText(_translate("Form", message, None))
+        if label == "bat":
+            self.BatLabel.setText(_translate("Form", message, None))
+
+    def resetConsoleMessage(self, label):
+        message = ""
+        if label == "info":
+            self.InfoLabel.setText(_translate("Form", message, None))
+        if label == "gold":
+            self.GoldLabel.setText(_translate("Form", message, None))
+        if label == "pit":
+            self.PitLabel.setText(_translate("Form", message, None))
+        if label == "empty":
+            self.EmptyLabel.setText(_translate("Form", message, None))
+        if label == "bat":
+            self.BatLabel.setText(_translate("Form", message, None))
+
 
     def movehero(self, direction):
         if self.moveturn == True:
@@ -441,8 +477,9 @@ class Ui_Form(QtGui.QWidget):
         self.hero.setPos(xCor, yCor)
 
     def died(self, won):
-        print("You found {} gold".format(self.hunter.getgold()))
-        print("You had {} arrows left".format(self.hunter.getarrows()))
+        ui.setConsoleMessage("info", "You died!")
+        ui.setConsoleMessage("gold", "You found {} gold".format(self.hunter.getgold()))
+        ui.setConsoleMessage("pit", "You had {} arrows left".format(self.hunter.getarrows()))
         self.workThread.quit()
         ##show highscore en replay scherm##
         highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
@@ -451,9 +488,9 @@ class Ui_Form(QtGui.QWidget):
         os.execl(python, python, * sys.argv)
 
     def win(self):
-        print("Well done! You defeated Wumpus!\n")
-        print("You found {} gold".format(self.hunter.getgold()))
-        print("You had {} arrows left".format(self.hunter.getarrows()))
+        ui.setConsoleMessage("info", "Well done! You defeated Wumpus!\n")
+        ui.setConsoleMessage("gold", "You found {} gold".format(self.hunter.getgold()))
+        ui.setConsoleMessage("pit", "You had {} arrows left".format(self.hunter.getarrows()))
         self.workThread.quit()
         ##show highscore en replay scherm##
         highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
@@ -511,34 +548,32 @@ class WorkerThread(QtCore.QThread):
                     if str(coordinates[0]) == str(rooms):
                         items.append(coordinates[1])
             if "gold" in items:
-                print("There is gold near you!")
+                ui.setConsoleMessage("gold", "There is gold near you!")
             if "bat" in items:
-                print("Bats nearby")
+                ui.setConsoleMessage("bat", "Bats nearby")
             if "pit" in items:
-                print("I feel a draft")
-
-            print("Wumpus", ui.wumpus.getposition())
+                ui.setConsoleMessage("pit", "I feel a draft")
 
             for coordinates in ui.roomsmap.showrooms():
                 for rooms in positionCheckWumpus:
                     if str(coordinates[0]) == str(rooms):
                         if str(rooms) == str(ui.wumpus.getposition()):
-                            print("I smell a Wumpus\n")
+                            ui.setConsoleMessage("empty", "I smell a Wumpus!")
 
             if alive:
                 if ui.hunter.getposition() == ui.wumpus.getposition():
-                    print("You have been eaten by Wumpy\n")
+                    ui.setConsoleMessage("info", "You have been eaten by Wumpy")
                     alive = False
                     ui.died(False)
                 if alive:
                     ui.wumpus.hunt(ui.hunter.getposition())
 
                     if ui.hunter.getposition() == ui.wumpus.getposition():
-                        print("You have been eaten by Wumpy\n")
+                        ui.setConsoleMessage("info", "You have been eaten by Wumpy")
                         alive = False
                         ui.died(False)
 
-            ui.setConsoleMessage("Do you want to move or shoot?")
+            ui.setConsoleMessage("info", "Do you want to move or shoot?")
             self.emit(QtCore.SIGNAL("action"))
             self.action = None
             while self.action == None:
@@ -546,7 +581,7 @@ class WorkerThread(QtCore.QThread):
 
             if self.action.lower() == "move":
                 ui.setMoveTurn()
-                ui.setConsoleMessage("\nPlease select your move Hunter. up, down, left or right?\n")
+                ui.setConsoleMessage("info", "Please select your move Hunter. up, down, left or right?")
                 self.direction = None
                 while self.direction == None:
                     sleep(0.1)
@@ -554,25 +589,25 @@ class WorkerThread(QtCore.QThread):
                 ui.resetMoveTurn()
                 self.lastdirection = self.direction
 
-                ui.setConsoleMessage("You moved {}!\n".format(self.action))
+                ui.setConsoleMessage("info", "You moved {}!\n".format(self.action))
 
                 for room in ui.roomsmap.showrooms():
                     if ui.hunter.getposition() == room[0]:
                         if room[1] == "pit":
-                            print("You stepped on a {}".format(room[1]))
-                            print("You died!\n")
+                            ui.setConsoleMessage("pit", "You stepped on a {}".format(room[1]))
                             alive = False
                         elif room[1] == "gold":
-                            print("You stepped on a {}".format(room[1]))
+                            ui.setConsoleMessage("gold", "You stepped on a {}".format(room[1]))
                             self.emit(QtCore.SIGNAL("gold"))
                         elif room[1] == "bat":
-                            print("You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
+                            ui.setConsoleMessage("info", "You stepped on a {}\nThe bat took you, and dropped you in a random room!".format(room[1]))
                             ui.hunter.setwumpuspos(ui.wumpus.getposition())
                             ui.respawn()
+                            sleep(1)
 
             elif self.action.lower() == "shoot":
                 ui.setShootTurn()
-                ui.setConsoleMessage("\nPlease select what way you want to shoot. up, down, left or right?\n")
+                ui.setConsoleMessage("info", "Please select what way you want to shoot. up, down, left or right?")
                 self.distance = 0
                 while len(ui.hunter.arPath) != 6:
                     self.distance = ui.getDistance()
@@ -616,11 +651,11 @@ def run():
 
 if __name__ == "__main__":
 
-    class DevNull:
-        def write(self, msg):
-            pass
-
-    sys.stderr = DevNull()
+    # class DevNull:
+    #     def write(self, msg):
+    #         pass
+    #
+    # sys.stderr = DevNull()
 
     start_UI.main()
     app = QtGui.QApplication(sys.argv)
