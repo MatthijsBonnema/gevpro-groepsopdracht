@@ -115,10 +115,14 @@ class Hero:
             print(self.poswumpus, self.arPath)
             if self.poswumpus in self.arPath:
                 self.victory = True
-            self.arPath = []
-            self.arDir = []
+            # self.arPath = []
+            # self.arDir = []
             print("Status:", self.victory)
             return self.arrows, self.victory
+
+    def resetarpath(self):
+        self.arPath = [""]
+        self.arDir = [""]
 
     def getVictory(self):
         return self.victory

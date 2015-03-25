@@ -7,6 +7,7 @@
 
 from PyQt4 import QtCore, QtGui
 import sys
+import os
 from room_generator import RoomGenerator
 from hero import Hero
 from wumpus import Wumpus
@@ -446,6 +447,8 @@ class Ui_Form(QtGui.QWidget):
         ##show highscore en replay scherm##
         highscore.highscore("Hunter_test", self.hunter.getgold(), self.hunter.getarrows(),
                             len(self.hunter.getpath()), won)
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
 
     def win(self):
         print("Well done! You defeated Wumpus!\n")
@@ -455,6 +458,8 @@ class Ui_Form(QtGui.QWidget):
         ##show highscore en replay scherm##
         highscore.highscore("Hunter_test", self.hunter.getgold(), self.hunter.getarrows(),
                             len(self.hunter.getpath()), True)
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
 
 
 
@@ -565,16 +570,19 @@ class WorkerThread(QtCore.QThread):
                 ui.setShootTurn()
                 ui.setConsoleMessage("\nPlease select what way you want to shoot. up, down, left or right?\n")
                 self.distance = 0
-                while len(ui.hunter.arPath) != 5:
+                while len(ui.hunter.arPath) != 6:
                     self.distance = ui.getDistance()
                     print(ui.hunter.arPath)
                     print(self.distance)
                     sleep(0.1)
+                ui.hunter.resetarpath()
                 print("done shooting")
                 ui.resetShootTurn()
                 ui.hunter.shoot(ui.wumpus.position)
                 if ui.hunter.getVictory():
                     alive = False
+                if ui.hunter.getarrows == 0:
+                    ui.died(False)
                 self.emit(QtCore.SIGNAL("arrow"))
 
             self.action = None
