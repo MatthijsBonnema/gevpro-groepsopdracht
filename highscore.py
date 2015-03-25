@@ -23,8 +23,8 @@ class Show_highscore(QtGui.QWidget):
         self.scorelabel = QtGui.QLabel("Score")
 
         self.grid = QtGui.QGridLayout()
-        self.grid.addWidget(self.namelabel, 0, 0)
-        self.grid.addWidget(self.scorelabel, 0, 1)
+        self.grid.addWidget(self.namelabel, 0, 1)
+        self.grid.addWidget(self.scorelabel, 0, 0)
 
         number_of_entries = self.entrycount()
 
