@@ -27,6 +27,7 @@ class Ui_Form(QtGui.QWidget):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         self.setupUi(self)
+        self.allowclose = True
 
     def setupUi(self, Form):
         self.closeWidget = False
@@ -103,11 +104,13 @@ class Ui_Form(QtGui.QWidget):
         highscore.main()
 
     def activategame(self):
+        self.allowclose = False
         self.close()
         return 0
 
     def closeEvent(self, QCloseEvent):
-        exit(0)
+        if self.allowclose:
+            exit(0)
 
 
 def main():

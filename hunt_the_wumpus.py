@@ -461,6 +461,10 @@ class Ui_Form(QtGui.QWidget):
         python = sys.executable
         os.execl(python, python, * sys.argv)
 
+    def closeEvent(self, QCloseEvent):
+        self.workThread.quit()
+        exit(0)
+
 
 
 class WorkerThread(QtCore.QThread):
