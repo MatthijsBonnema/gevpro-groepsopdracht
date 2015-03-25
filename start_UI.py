@@ -104,8 +104,10 @@ class Ui_Form(QtGui.QWidget):
 
     def activategame(self):
         self.close()
-        hunt_the_wumpus.run()
         return 0
+
+    def closeEvent(self, QCloseEvent):
+        exit(0)
 
 
 def main():
