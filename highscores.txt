@@ -19,3 +19,5 @@
 6550 Hunter_test
 6350 Hunter_test
 6050 Hunter_test
+1700 Hunter_test
+1600 Hunter_test

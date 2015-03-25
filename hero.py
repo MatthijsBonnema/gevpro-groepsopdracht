@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # File: hero.py
 # Author: Tomer Gabay
-# Date: 03/24/15
+# Date: 03/25/15
 # Info:
 
 from random import randrange
@@ -29,6 +29,7 @@ class Hero:
 		self.poswumpus = poswumpus
 
 	def respawn(self):
+		"""Respawns hero, but not to the same cave as the wumpus"""
 		self.xCor = randrange(1, 6)
 		self.yCor = randrange(1, 5)
 		if (self.xCor, self.yCor) != self.poswumpus:
@@ -60,7 +61,7 @@ class Hero:
 
 	def shootup(self):
 		self.arYcor -= 1
-		if self.arDir[-1] == "down":
+		if self.arDir[-1] == "down": # to undo last direction
 			del self.arDir[-1]
 			del self.arPath[-1]
 		else:
@@ -72,7 +73,7 @@ class Hero:
 
 	def shootleft(self):
 		self.arXcor -= 1
-		if self.arDir[-1] == "right":
+		if self.arDir[-1] == "right":  # to undo last direction
 			del self.arDir[-1]
 			del self.arPath[-1]
 		else:
@@ -84,7 +85,7 @@ class Hero:
 
 	def shootright(self):
 		self.arXcor += 1
-		if self.arDir[-1] == "left":
+		if self.arDir[-1] == "left":  # to undo last direction
 			del self.arDir[-1]
 			del self.arPath[-1]
 		else:
@@ -96,7 +97,7 @@ class Hero:
 
 	def shootdown(self):
 		self.arYcor += 1
-		if self.arDir[-1] == "up":
+		if self.arDir[-1] == "up":  # to undo last direction
 			del self.arDir[-1]
 			del self.arPath[-1]
 		else:
@@ -108,7 +109,6 @@ class Hero:
 
 	def postshootupdate(self):
 		"""resets path and direction and substracts an arrow if shot is over"""
-		# self.victory = False
 		if len(self.arPath) == 6:
 			self.arrows -= 1
 			print(self.poswumpus, self.arPath)
@@ -116,14 +116,10 @@ class Hero:
 				self.victory = True
 			self.arPath = [""]
 			self.arDir = [""]
-			print("Status:", self.victory)
 			return self.arrows, self.victory
 
 	def getVictory(self):
 		return self.victory
-
-
-
 
 	def move(self, moveto):
 		if moveto == "up":

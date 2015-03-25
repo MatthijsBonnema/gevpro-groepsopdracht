@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # File: start_UI.py
 # Author: Tomer Gabay
-# Date: 03/23/15
+# Date: 03/25/15
 # Info: QtDesigner was used 
 
 from PyQt4 import QtCore, QtGui
@@ -51,27 +51,7 @@ class Ui_Form(QtGui.QWidget):
         self.by_lbl.setObjectName(_fromUtf8("by_lbl"))
         self.verticalLayout_2.addWidget(self.by_lbl)
         self.verticalLayout.addWidget(self.up_widget)
-        self.middle_widget = QtGui.QWidget(Form)
-        self.middle_widget.setObjectName(_fromUtf8("middle_widget"))
-        self.horizontalLayout_5 = QtGui.QHBoxLayout(self.middle_widget)
-        self.horizontalLayout_5.setMargin(0)
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        self.formLayout = QtGui.QFormLayout()
-        self.formLayout.setObjectName(_fromUtf8("formLayout"))
-        self.name_lbl = QtGui.QLabel(self.middle_widget)
-        self.name_lbl.setMinimumSize(QtCore.QSize(50, 0))
-        self.name_lbl.setStyleSheet(_fromUtf8("color: white;"))
-        self.name_lbl.setObjectName(_fromUtf8("name_lbl"))
-        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.name_lbl)
-        self.name_input = QtGui.QLineEdit(self.middle_widget)
-        self.name_input.setMinimumSize(QtCore.QSize(200, 0))
-        self.name_input.setMaximumSize(QtCore.QSize(250, 16777215))
-        self.name_input.setStyleSheet(_fromUtf8("background-color: white;\n"
-                                                "color: black;"))
-        self.name_input.setObjectName(_fromUtf8("name_input"))
-        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.name_input)
-        self.horizontalLayout_5.addLayout(self.formLayout)
-        self.verticalLayout.addWidget(self.middle_widget)
+  
         self.down_widget = QtGui.QWidget(Form)
         self.down_widget.setObjectName(_fromUtf8("down_widget"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.down_widget)
@@ -98,18 +78,11 @@ class Ui_Form(QtGui.QWidget):
         self.horizontalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout.addWidget(self.down_widget)
 
-        self.middle_widget.hide()
-
         self.retranslateUi(Form)
 
         QtCore.QMetaObject.connectSlotsByName(Form)
-        self.username = self.name_input.text()
+        #activate game or highscores:
         self.play_btn.clicked.connect(self.activategame)
-        # self.closeWidget = self.play_btn.clicked.connect(self.activategame) ######
-        # if self.closeWidget == 0: ##########
-        #     print("hallo")
-        #     self.close()         #########
-        # print(self.closeWidget) ###########
         self.highscores_btn.clicked.connect(self.highscores)
 
     def retranslateUi(self, Form):
@@ -122,8 +95,6 @@ class Ui_Form(QtGui.QWidget):
         self.by_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:8pt;\">"
                                                "By: Matthijs Bonnema, Tomer Gabay, Jeroen Wilkens</span></p>"
                                                "</body></html>", None))
-        self.name_lbl.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:14pt;"
-                                                 " font-weight:600;\">Name:</span></p></body></html>", None))
         self.play_btn.setText(_translate("Form", "Play!", None))
         self.highscores_btn.setText(_translate("Form", "Highscores", None))
 
@@ -133,7 +104,6 @@ class Ui_Form(QtGui.QWidget):
     def activategame(self):
         self.close()
         hunt_the_wumpus.run()
-        print("test")
         return 0
 
 
