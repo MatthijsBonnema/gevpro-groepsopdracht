@@ -486,7 +486,7 @@ class Ui_Form(QtGui.QWidget):
                                                                            self.hunter.getgold(),
                                                                            self.hunter.getarrows(),
                                                                            len(self.hunter.getpath()),
-                                                                           won)))
+                                                                           False)))
         ui.setConsoleMessage("empty", "Press Escape to restart the game.")
         ##show highscore en replay scherm##
 
@@ -494,11 +494,12 @@ class Ui_Form(QtGui.QWidget):
         ui.setConsoleMessage("info", "Well done! You defeated Wumpus!")
         ui.setConsoleMessage("gold", "You found {} gold".format(self.hunter.getgold()))
         ui.setConsoleMessage("pit", "You had {} arrows left".format(self.hunter.getarrows()))
+        # ui.setConsoleMessage("bat", "test")
         ui.setConsoleMessage("bat", "Score: {}".format(highscore.highscore(self.hunter.getname(),
                                                                    self.hunter.getgold(),
                                                                    self.hunter.getarrows(),
                                                                    len(self.hunter.getpath()),
-                                                                   won)))
+                                                                   True)))
         ##show highscore en replay scherm##
         highscore.highscore(self.hunter.getname(), self.hunter.getgold(), self.hunter.getarrows(),
                             len(self.hunter.getpath()), True)
@@ -537,21 +538,35 @@ class WorkerThread(QtCore.QThread):
             # check if something is near
             xCor, yCor = ui.hunter.getposition()
 
+            positionCheck = [(xCor, yCor + 1), (5, yCor), (xCor + 1, yCor), (xCor, yCor - 1)]
             if xCor == 1:
-                positionCheck = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
-                positionCheckWumpus = [(xCor, yCor + 1), (xCor, 5), (xCor + 1, yCor), (xCor - 1, yCor)]
-            elif xCor == 5:
-                positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (1, yCor), (xCor - 1, yCor)]
-                positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (1, yCor), (xCor - 1, yCor)]
-            elif yCor == 1:
-                positionCheck = [(xCor, yCor + 1), (xCor, 4), (xCor + 1, yCor), (xCor - 1, yCor)]
-                positionCheckWumpus = [(xCor, yCor + 1), (xCor, 4), (xCor + 1, yCor), (xCor - 1, yCor)]
-            elif yCor == 4:
-                positionCheck = [(xCor, 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
-                positionCheckWumpus = [(xCor, 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
-            else:
-                positionCheck = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
-                positionCheckWumpus = [(xCor, yCor + 1), (xCor, yCor - 1), (xCor + 1, yCor), (xCor - 1, yCor)]
+                positionCheck.append((5, yCor))
+            if xCor == 5:
+                positionCheck.append((1, yCor))
+            if yCor == 1:
+                positionCheck.append((xCor, 4))
+            if yCor == 4:
+                positionCheck.append((xCor, 1))
+
+            positionCheckWumpus = (positionCheck + [(xCor + 1, yCor + 1), (xCor - 1, yCor + 1), (xCor + 1, yCor - 1),
+                                                   (xCor - 1, yCor - 1), (xCor - 2, yCor), (xCor + 2, yCor),
+                                                   (xCor, yCor + 2), (xCor, yCor - 2)])
+            if xCor == 1:
+                positionCheckWumpus.append((4, yCor))
+            if xCor == 5:
+                positionCheckWumpus.append((1, yCor))
+            if yCor == 1:
+                positionCheckWumpus.append((xCor, 4))
+            if yCor == 4:
+                positionCheckWumpus.append((xCor, 1))
+            if (xCor, yCor) == (1, 1):
+                positionCheckWumpus.append((5, 4))
+            if (xCor, yCor) == (5, 4):
+                positionCheckWumpus.append((1, 1))
+            if (xCor, yCor) == (1, 4):
+                positionCheckWumpus.append((5, 1))
+            if (xCor, yCor) == (5, 1):
+                positionCheckWumpus.append((1, 4))
 
             for coordinates in ui.roomsmap.showrooms():
                 for rooms in positionCheck:
@@ -563,6 +578,9 @@ class WorkerThread(QtCore.QThread):
                 ui.setConsoleMessage("bat", "Bats nearby")
             if "pit" in items:
                 ui.setConsoleMessage("pit", "I feel a draft")
+
+            print(positionCheckWumpus, ui.wumpus.getposition())
+
 
             for coordinates in ui.roomsmap.showrooms():
                 for rooms in positionCheckWumpus:
