@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+# File: highscore.py
+# Author: Jeroen Wilkens
+# Date: 03/25/15
+# Info:
 
 from PyQt4 import QtGui, QtCore
 import sys
@@ -56,7 +60,6 @@ class Show_highscore(QtGui.QWidget):
 
 def main():
 
-    app = QtGui.QApplication(sys.argv)
     object = Show_highscore()
     object.show()
     app.exec_()
