@@ -634,11 +634,11 @@ class WorkerThread(QtCore.QThread):
 
             self.action = None
 
-
-        if not ui.hunter.victory:
-            ui.died(False)
-        else:
+        if ui.hunter.victory:
             ui.win()
+        else:
+            ui.died(False)
+
 
     def actionMove(self):
         self.action = "move"
