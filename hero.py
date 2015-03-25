@@ -123,7 +123,8 @@ class Hero:
     def getVictory(self):
         return self.victory
 
-
+    def getarrowposition(self):
+        return self.arXcor, self.arYcor
 
 
     def move(self, moveto):

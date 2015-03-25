@@ -63,25 +63,25 @@ class Ui_Form(QtGui.QWidget):
             if self.moveturn:
                 self.movehero("up")
             if self.shootturn:
-                self.hunter.shootup()
+                self.movearrow("up")
                 self.distanceCounter()
         if event == "down":
             if self.moveturn:
                 self.movehero("down")
             if self.shootturn:
-                self.hunter.shootdown()
+                self.movearrow("down")
                 self.distanceCounter()
         if event == "left":
             if self.moveturn:
                 self.movehero("left")
             if self.shootturn:
-                self.hunter.shootleft()
+                self.movearrow("left")
                 self.distanceCounter()
         if event == "right":
             if self.moveturn:
                 self.movehero("right")
             if self.shootturn:
-                self.hunter.shootright()
+                self.movearrow("right")
                 self.distanceCounter()
         if event == "shoot":
             self.hunter.shoot(self.wumpus.position) #########
@@ -209,6 +209,8 @@ class Ui_Form(QtGui.QWidget):
 
         hunterx, huntery = self.coordConverter(self.hunter.getposition())
         self.sethero(hunterx, huntery)
+        self.setLastDirection()
+        self.setarrow()
         self.wumpus = Wumpus(self.hunter.getposition())
         self.roomsmap = RoomGenerator(self.hunter.getposition(), self.wumpus.getposition())
 
@@ -225,6 +227,8 @@ class Ui_Form(QtGui.QWidget):
         self.connect(self.workThread, QtCore.SIGNAL("action"), self.actionreset, QtCore.Qt.DirectConnection)
         self.connect(self.workThread, QtCore.SIGNAL("gold"), self.setgold, QtCore.Qt.DirectConnection)
         self.connect(self.workThread, QtCore.SIGNAL("arrow"), self.setArrowAmount, QtCore.Qt.DirectConnection)
+        self.connect(self, QtCore.SIGNAL("setarrow"), self.resetarrow, QtCore.Qt.DirectConnection)
+        self.connect(self, QtCore.SIGNAL("removearrow"), self.hidearrow, QtCore.Qt.DirectConnection)
 
     def setgold(self):
         self.hunter.foundgold()
@@ -303,6 +307,71 @@ class Ui_Form(QtGui.QWidget):
                     self.hero.moveBy(240, 0)
                 self.hunter.moveright()
 
+    def movearrow(self, direction):
+        if self.shootturn == True:
+            self.arrowposition = self.hunter.getarrowposition()
+            if direction == "up":
+                if self.arrowposition[1] == 1:
+                    self.workThread.direction = "up"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowdown.png'))
+                    self.arrow.moveBy(0, 3 * -195)
+                else:
+                    self.workThread.direction = "up"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowdown.png'))
+                    self.arrow.moveBy(0, 195)
+                self.hunter.shootup()
+            if direction == "down":
+                if self.arrowposition[1] == 4:
+                    self.workThread.direction = "down"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowup.png'))
+                    self.arrow.moveBy(0, 3 * 195)
+                else:
+                    self.workThread.direction = "down"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowup.png'))
+                    self.arrow.moveBy(0, -195)
+                self.hunter.shootdown()
+            if direction == "left":
+                if self.arrowposition[0] == 1:
+                    self.workThread.direction = "left"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowleft.png'))
+                    self.arrow.moveBy(4 * 240, 0)
+                else:
+                    self.workThread.direction = "left"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowleft.png'))
+                    self.arrow.moveBy(-240, 0)
+                self.hunter.shootleft()
+            if direction == "right":
+                if self.arrowposition[0] == 5:
+                    self.workThread.direction = "right"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowright.png'))
+                    self.arrow.moveBy(4 * -240, 0)
+                else:
+                    self.workThread.direction = "right"
+                    self.arrow.setPixmap(QtGui.QPixmap('arrowright.png'))
+                    self.arrow.moveBy(240, 0)
+                self.hunter.shootright()
+
+    def setarrow(self):
+        self.arrow = QtGui.QGraphicsPixmapItem()
+        arrowpng = "arrow" + self.lastdirection + ".png"
+        self.arrow.setPixmap(QtGui.QPixmap(arrowpng))
+
+    def setLastDirection(self):
+        try:
+            self.lastdirection = self.workThread.lastdirection
+        except:
+            self.lastdirection = "up"
+
+    def resetarrow(self):
+        xCor, yCor = self.hunter.getposition()
+        xCord, yCord = self.coordConverter((xCor, yCor))
+        print(xCord, yCord)
+        self.arrow.setPos(xCord, yCord)
+        self.scene.addItem(self.arrow)
+
+    def hidearrow(self):
+        self.scene.removeItem(self.arrow)
+
     def sethero(self, hunterx, huntery):
         self.hero = QtGui.QGraphicsPixmapItem()
         self.hero.setPixmap(QtGui.QPixmap("hero_up.png"))
@@ -358,9 +427,11 @@ class Ui_Form(QtGui.QWidget):
         self.moveturn = False
 
     def setShootTurn(self):
+        self.emit(QtCore.SIGNAL("setarrow"))
         self.shootturn = True
 
     def resetShootTurn(self):
+        self.emit(QtCore.SIGNAL("removearrow"))
         self.shootturn = False
 
     def respawn(self):
@@ -399,6 +470,7 @@ class WorkerThread(QtCore.QThread):
         alive = True
         self.action = None
         self.direction = None
+        self.lastdirection = "up"
         self.emit(QtCore.SIGNAL("gold"))
         self.emit(QtCore.SIGNAL("arrow"))
 
@@ -469,7 +541,9 @@ class WorkerThread(QtCore.QThread):
                 self.direction = None
                 while self.direction == None:
                     sleep(0.1)
+                ui.setLastDirection()
                 ui.resetMoveTurn()
+                self.lastdirection = self.direction
 
                 ui.setConsoleMessage("You moved {}!\n".format(self.action))
 
