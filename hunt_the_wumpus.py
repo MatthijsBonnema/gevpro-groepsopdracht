@@ -432,8 +432,8 @@ class Ui_Form(QtGui.QWidget):
         self.scene.addItem(self.hero)
 
     def coordConverter(self, coord):
-        """Convert the actual coords, to the coords on the map in pixels, kept as long if statement incase
-        of small adjustments."""
+        """Convert the actual coords, to the coords on the map in pixels, kept as a long if statement incase
+        small adjustments are needed."""
         if coord == (1, 1):
             return -497, 266
         if coord == (1, 2):
