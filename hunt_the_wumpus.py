@@ -65,21 +65,25 @@ class Ui_Form(QtGui.QWidget):
                     self.movehero("up")
                 if self.shootturn:
                     self.movearrow("up")
+                    self.distanceCounter()
             if event == "down":
                 if self.moveturn:
                     self.movehero("down")
                 if self.shootturn:
                     self.movearrow("down")
+                    self.distanceCounter()
             if event == "left":
                 if self.moveturn:
                     self.movehero("left")
                 if self.shootturn:
                     self.movearrow("left")
+                    self.distanceCounter()
             if event == "right":
                 if self.moveturn:
                     self.movehero("right")
                 if self.shootturn:
                     self.movearrow("right")
+                    self.distanceCounter()
             if event == "shoot":  # If the event is shoot, start the shooting function
                 self.hunter.shoot(self.wumpus.position)
                 self.workThread.action = "shoot"
