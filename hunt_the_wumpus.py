@@ -716,12 +716,12 @@ def run():
 
 if __name__ == "__main__":
 
-    # class DevNull:
-    #     """Write all errors to blackhole, since shown errors are PyQt bugs"""
-    #     def write(self, msg):
-    #         pass
+    class DevNull:
+        """Write all errors to blackhole, since shown errors are PyQt bugs"""
+        def write(self, msg):
+            pass
 
-    # sys.stderr = DevNull()
+    sys.stderr = DevNull()
 
     start_UI.main()  # Start the start screen
     app = QtGui.QApplication(sys.argv)
