@@ -47,7 +47,7 @@ class Ui_Form(QtGui.QWidget):
                 self.eventHandler("left")
             if event.key() == QtCore.Qt.Key_D:
                 self.eventHandler("right")
-            if event.key() == QtCore.Qt.Key_Space:
+            if event.key() == QtCore.Qt.Key_B:
                 self.eventHandler("shoot")
             if event.key() == QtCore.Qt.Key_M:
                 self.eventHandler("move")
