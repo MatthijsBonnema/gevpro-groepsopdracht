@@ -65,7 +65,7 @@ class Ui_Form(QtGui.QWidget):
                     self.movehero("up")
                 if self.shootturn:
                     self.movearrow("up")
-                    self.distanceCounter()
+                    self.distanceCounter()  # Track movement of arrow
             if event == "down":
                 if self.moveturn:
                     self.movehero("down")
@@ -280,11 +280,13 @@ class Ui_Form(QtGui.QWidget):
         self.arrows_amount.display(arrows)
 
     def distanceCounter(self):
+        """Tracks movement of arrow"""
         if self.distance == 5:
             self.distance = 0
             self.distance += 1
 
     def getDistance(self):
+        """Return the path length of arrow"""
         return self.distance
 
     def eventHandlerMove(self):
