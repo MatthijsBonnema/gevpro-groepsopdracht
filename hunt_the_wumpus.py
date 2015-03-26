@@ -685,7 +685,6 @@ class WorkerThread(QtCore.QThread):
                     self.distance = 0  # Set distance to 0
                     while len(ui.hunter.arPath) != 6:  # While player did not set a path of lengt 6 (allows trackback)
                         self.distance = ui.getDistance()  # Set the distance
-                        print(ui.hunter.arPath)
                         sleep(0.1)  # Slows down the while loop
                     ui.hunter.resetarpath()  # Reset the path of the arrow
                     ui.resetShootTurn()  # Reset the shootturn
