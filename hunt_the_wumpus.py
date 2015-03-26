@@ -47,7 +47,7 @@ class Ui_Form(QtGui.QWidget):
                 self.eventHandler("left")
             if event.key() == QtCore.Qt.Key_D:
                 self.eventHandler("right")
-            if event.key() == QtCore.Qt.Key_B:
+            if event.key() == QtCore.Qt.Key_Space:
                 self.eventHandler("shoot")
             if event.key() == QtCore.Qt.Key_M:
                 self.eventHandler("move")
@@ -274,6 +274,14 @@ class Ui_Form(QtGui.QWidget):
         """Set the amount of arrows in the label"""
         arrows = self.hunter.getarrows()
         self.arrows_amount.display(arrows)
+
+    def distanceCounter(self):
+        if self.distance == 5:
+            self.distance = 0
+            self.distance += 1
+
+    def getDistance(self):
+        return self.distance
 
     def eventHandlerMove(self):
         """Allows the workThread to control the eventHandler"""
@@ -671,6 +679,7 @@ class WorkerThread(QtCore.QThread):
                     self.distance = 0  # Set distance to 0
                     while len(ui.hunter.arPath) != 6:  # While player did not set a path of lengt 6 (allows trackback)
                         self.distance = ui.getDistance()  # Set the distance
+                        print(ui.hunter.arPath)
                         sleep(0.1)  # Slows down the while loop
                     ui.hunter.resetarpath()  # Reset the path of the arrow
                     ui.resetShootTurn()  # Reset the shootturn
@@ -702,12 +711,12 @@ def run():
 
 if __name__ == "__main__":
 
-    class DevNull:
-        """Write all errors to blackhole, since shown errors are PyQt bugs"""
-        def write(self, msg):
-            pass
+    # class DevNull:
+    #     """Write all errors to blackhole, since shown errors are PyQt bugs"""
+    #     def write(self, msg):
+    #         pass
 
-    sys.stderr = DevNull()
+    # sys.stderr = DevNull()
 
     start_UI.main()  # Start the start screen
     app = QtGui.QApplication(sys.argv)
